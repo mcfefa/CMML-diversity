@@ -11,10 +11,10 @@ library("MASS")
 rm(list = ls())
 
 #Set dir to save to
-filedir <- '/Users/4472241/scCode/density_over-under/'
+filedir <- '/Users/4472241/scCode/density_over-under_rep1/'
 
 #Import the reference and convert to geyser 1 dataframe
-ref_seurat <- readRDS('/Users/4472241/scCode/rep123_mapping/reps123Integrated.rds')
+ref_seurat <- readRDS('/Users/4472241/scCode/palantirEmbeddings/mapToRep1/reps123Integrated.rds')
 geyser1 <- data.frame('duration' = ref_seurat@meta.data[["Palantir Embeddings"]][["X"]], 
                       'waiting' = ref_seurat@meta.data[["Palantir Embeddings"]][["Y"]])
 
@@ -32,20 +32,22 @@ rdsFileList <- c('CMML1_LTB3966_2020-10-15', 'CMML2_LTB4121_2020-10-15', 'CMML3_
                  'CMML36_SF-140925-00135_2020-10-15', 'CMML37_SF-140613-00036_2020-10-15', 'CMML38_SF-140804-00065_2020-10-15',
                  'CMML39_SF-150102-00008_2020-10-15', 'CMML40_SF-130709-00171_2020-10-15')
 
-for (i in 1:length(rdsFileList)){
-
+for (i in 1:39){
+  
+  #Set sample ID to read in the right file
   sampleID <- paste0('cmml',i)
   
-  query <- read.csv(paste0('/Users/4472241/scCode/rep123_mapping/',sampleID,'PalantirEmbeddings.csv'))
+  #Read in the csv file containing the embeddings and convert to dataframe geyser2
+  query <- read.csv(paste0('/Users/4472241/scCode/palantirEmbeddings/mapToRep1/',sampleID,'PalantirEmbeddings.csv'))
   geyser2 <- data.frame('duration' = query$X1, 'waiting' = query$X2)
   
-  # Calculate the common x and y range for geyser1 and geyser2
-  xrng = range(c(geyser1$duration, geyser2$duration))
-  yrng = range(c(geyser1$waiting, geyser2$waiting))
+  #Set manually the common x and y range for geyser1 and geyser2
+  xrng = c(-32, 28)
+  yrng = c(-31, 28)
   
   # Calculate the 2d density estimate over the common range
-  d1 = kde2d(geyser1$duration, geyser1$waiting, lims=c(xrng, yrng), n=200)
-  d2 = kde2d(geyser2$duration, geyser2$waiting, lims=c(xrng, yrng), n=200)
+  d1 = kde2d(geyser1$duration, geyser1$waiting, lims=c(xrng, yrng), n=200, h=3)
+  d2 = kde2d(geyser2$duration, geyser2$waiting, lims=c(xrng, yrng), n=200, h=3)
   
   # Confirm that the grid points for each density estimate are identical
   identical(d1$x, d2$x) # TRUE
@@ -53,9 +55,8 @@ for (i in 1:length(rdsFileList)){
   
   # Calculate the difference between the 2d density estimates
   diff12 = d1 
-  diff12$z = d2$z - d1$z
+  diff12$z = log(d2$z*1000+1) - log(d1$z*1000+1)
   
-  ## Melt data into long format
   # First, add row and column names (x and y grid values) to the z-value matrix
   rownames(diff12$z) = diff12$x
   colnames(diff12$z) = diff12$y
@@ -64,15 +65,16 @@ for (i in 1:length(rdsFileList)){
   diff12.m = melt(diff12$z, id.var=rownames(diff12))
   names(diff12.m) = c("Duration","Waiting","DensityDiff")
   
-  # Plot difference between geyser2 and geyser1 density
-  pdf(paste0(filedir,sampleID,'_densityPlotRedBlue.pdf'))
-  print(ggplot(diff12.m, aes(Duration, Waiting, z=DensityDiff, fill=DensityDiff)) +
-    geom_tile() +
-    stat_contour(aes(colour=..level..), binwidth=0.1) +
+  # Plot and save difference between geyser2 and geyser1 density
+  pdf(paste0(filedir,sampleID,'_densityPlotRedBlueNEW.pdf'),width = 8, height = 6)
+  print(ggplot()+
+    geom_tile(diff12.m, mapping = aes(Duration, Waiting, fill=DensityDiff)) +
+    stat_contour(aes(colour=..level..), binwidth=0.001) +
     scale_fill_gradient2(low="red",mid="white", high="blue", midpoint=0) +
-    scale_colour_gradient2(low="red", mid="white", high="blue", midpoint=0) +
     coord_cartesian(xlim=xrng, ylim=yrng)+
-    guides(colour=FALSE))
+    guides(colour=FALSE)+
+    geom_point(geyser1, mapping = aes(x=duration, y=waiting), alpha = .1, size = .0005)+
+    theme(panel.background = element_rect(fill = "white")))
   dev.off()
 }
 
