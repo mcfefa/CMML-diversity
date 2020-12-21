@@ -12,14 +12,186 @@ library(matrixStats)
 rm(list=ls())
 
 #Set directory to save to
-filedir <- "/Users/4472241/scCode/layerUMAP+Clustering/"
+filedir <- "/Users/4472241/scCode/finalLayerUMAP_Code+Output/allSamples/"
+tag <- '_noHarmony_30Neighbors_AllSamples'
 
-#Define function used to scale and comput pca
-ScaleAndProjectPCA <- function(newObject, refObject, scale_max = 10){
+#Define function used to scale and compute pca
+scaleRegressAndProjectPCA <- function(newObject, refObject, scale_max = 10, 
+                                      vars.to.regress = c("nCount_RNA","percent.mito"),
+                                      block.size = 1000, split.by = NULL,
+                                      model.use = 'linear', use.umi = FALSE,
+                                      do.scale = TRUE, do.center = TRUE){
+  #Enter default settings for scaledata in seurat
+  split.by = NULL
+  model.use = 'linear'
+  use.umi = FALSE
+  do.scale = TRUE
+  do.center = TRUE
+  verbose = TRUE
   
+  #Set latent.data to NULL initially
+  latent.dataNew <- NULL
+  latent.dataRef <- NULL
+  
+  #Temporary info
+  #refObject <- oldSamples
+  #newObject <- newSamples
+  #vars.to.regress <- c("nCount_RNA","percent.mito")
+  
+  #Define chunk points function
+  ChunkPoints <- function(dsize, csize) {
+    return(vapply(
+      X = 1L:ceiling(x = dsize / csize),
+      FUN = function(i) {
+        return(c(
+          start = (csize * (i - 1L)) + 1L,
+          end = min(csize * i, dsize)
+        ))
+      },
+      FUN.VALUE = numeric(length = 2L)
+    ))
+  }
+  
+  RegressOutUsingRef <- function(
+    data.exprRef,
+    latent.dataRef,
+    data.exprNew,
+    latent.dataNew,
+    features.regress,
+    model.use = 'linear',
+    use.umi = FALSE
+  ) {
+    
+    # Check features.regress
+    if (is.null(x = features.regress)) {
+      features.regress <- 1:nrow(x = data.exprNew)
+    }
+    if (is.character(x = features.regress)) {
+      features.regress <- intersect(x = features.regress, y = rownames(x = data.exprNew))
+      if (length(x = features.regress) == 0) {
+        stop("Cannot use features that are beyond the scope of data.expr")
+      }
+    } else if (max(features.regress) > nrow(x = data.exprNew)) {
+      stop("Cannot use features that are beyond the scope of data.expr")
+    }
+    # Check dataset dimensions
+    if (nrow(x = latent.dataNew) != ncol(x = data.exprNew)) {
+      stop("Uneven number of cells between latent data and expression data")
+    }
+    
+    # Create formula for regression using reference data
+    vars.to.regress <- colnames(x = latent.dataRef)
+    fmla <- paste('GENE ~', paste(vars.to.regress, collapse = '+'))
+    fmla <- as.formula(object = fmla)
+    
+    # Make results matrix
+    data.resid <- matrix(
+      nrow = nrow(x = data.exprNew),
+      ncol = ncol(x = data.exprNew)
+    )
+    
+    #Define progress bar
+    pb <- txtProgressBar(char = '=', style = 3, file = stderr())
+    
+    #Regress out using reference formula
+    for (i in 1:length(x = features.regress)) {
+      
+      x <- features.regress[i]
+      regression.matNew <- cbind(latent.dataNew, data.exprNew[x, ])
+      if (model.use == "linear") {
+        # Repeatedly call lm to fit model using reference, and then apply it to
+        #the new cells
+        regression.matRef <- cbind(latent.dataRef, data.exprRef[x,])
+        colnames(x = regression.matRef) <- c(vars.to.regress, 'GENE')
+        qr <- lm(fmla, data = regression.matRef, qr = TRUE)
+        rm(regression.matRef)
+      }
+      colnames(x = regression.matNew) <- c(vars.to.regress, 'GENE')
+      regression.matNew <- -qr[["coefficients"]][["(Intercept)"]]+data.exprNew[x,]-
+        qr[["coefficients"]][["nCount_RNA"]]*latent.dataNew[,"nCount_RNA"]-
+        qr[["coefficients"]][["percent.mito"]]*latent.dataNew[,"percent.mito"]
+      data.resid[i, ] <- regression.matNew
+      setTxtProgressBar(pb = pb, value = i / length(x = features.regress))
+    }
+    
+    dimnames(x = data.resid) <- dimnames(x = data.exprNew)
+    return(data.resid)
+  }
+  
+  #****************FROM ScaleData.Seurat********************************
+  ###Fill latent.data for New and Ref Object
+  #New
+  assayNew <- DefaultAssay(object = newObject)
+  assay.dataNew <- GetAssayData(object = newObject, assay = assayNew)
+  if (any(vars.to.regress %in% colnames(x = newObject[[]]))) {
+    latent.dataNew <- newObject[[vars.to.regress[vars.to.regress %in% colnames(x = newObject[[]])]]]
+  } else {
+    latent.dataNew <- NULL
+  }
+  #Ref
+  assayRef <- DefaultAssay(object = refObject)
+  assay.dataRef <- GetAssayData(object = refObject, assay = assayRef)
+  if (any(vars.to.regress %in% colnames(x = refObject[[]]))) {
+    latent.dataRef <- refObject[[vars.to.regress[vars.to.regress %in% colnames(x = refObject[[]])]]]
+  } else {
+    latent.dataRef <- NULL
+  }
+  
+  #***********FROM ScaleData.Default********************************
+  #Keep only the variable features of reference
+  features <- VariableFeatures(refObject)
+  newObject.data <- assay.dataNew[features, , drop=FALSE]
+  refObject.data <- assay.dataRef[features, , drop =FALSE]
+  newObject.names <- dimnames(x = newObject.data)
+  refObject.names <- dimnames(x = refObject.data)
+  
+  #If we have variables to regress
+  #Order and assign cell names to rows
+  latent.dataRef <- latent.dataRef[colnames(x = refObject.data), , drop = FALSE]
+  latent.dataNew <- latent.dataNew[colnames(x = newObject.data), , drop = FALSE]
+  rownames(x = latent.dataNew) <- colnames(x = newObject.data)
+  rownames(x = latent.dataRef) <- colnames(x = refObject.data)
+  
+  #Update status by printing message
+  message("Regressing out ", paste(vars.to.regress, collapse = ', '))
+  
+  #chunk.points is the same for both ref and new
+  chunk.points <- ChunkPoints(dsize = nrow(x = newObject.data), csize = block.size)
+  
+  #split.by is true when we only regress.by.vars meaning split.cells is all cells
+  split.by <- TRUE
+  split.cellsRef <- split(x = colnames(x = refObject.data), f = split.by)
+  split.cellsNew <- split(x = colnames(x = newObject.data), f = split.by)
+  
+  newObject.data <- RegressOutUsingRef(
+    data.exprRef = refObject.data[, split.cellsRef[["TRUE"]], drop = FALSE],
+    latent.dataRef = latent.dataRef[split.cellsRef[['TRUE']], , drop = FALSE],
+    data.exprNew = newObject.data[, split.cellsNew[["TRUE"]], drop = FALSE],
+    latent.dataNew = latent.dataNew[split.cellsNew[['TRUE']], , drop = FALSE],
+    features.regress = features,
+    model.use = "linear",
+    use.umi = FALSE
+  )
+  
+  refObject.data <- RegressOutUsingRef(
+    data.exprRef = refObject.data[, split.cellsRef[["TRUE"]], drop = FALSE],
+    latent.dataRef = latent.dataRef[split.cellsRef[['TRUE']], , drop = FALSE],
+    data.exprNew = refObject.data[, split.cellsRef[["TRUE"]], drop = FALSE],
+    latent.dataNew = latent.dataRef[split.cellsRef[['TRUE']], , drop = FALSE],
+    features.regress = features,
+    model.use = "linear",
+    use.umi = FALSE
+  )
+  
+  dimnames(x = newObject.data) <- newObject.names
+  dimnames(x = refObject.data) <- refObject.names
+  
+  
+  
+  #**************Regular scale function without vars.to.regress*****************
   # inspired by https://www.r-bloggers.com/a-faster-scale-function/
-  refMat <- data.matrix(refObject@assays[['RNA']]@data[VariableFeatures(refObject),])
-  mat <- data.matrix(newObject@assays[['RNA']]@data[VariableFeatures(refObject),])
+  refMat <- refObject.data
+  mat <- newObject.data
   
   #Find reference mean
   rmRef <- rowMeans2(x = refMat, na.rm = TRUE)
@@ -27,10 +199,10 @@ ScaleAndProjectPCA <- function(newObject, refObject, scale_max = 10){
   #Find Reference SD
   rsdRef <- rowSds(refMat, center = rmRef)
   
-  #Center
+  #Center against reference
   mat <- mat - rmRef
   
-  #Scale
+  #Scale against reference
   mat <- mat / rsdRef
   
   #Set Scaled Max to adjusted data
@@ -53,7 +225,7 @@ ScaleAndProjectPCA <- function(newObject, refObject, scale_max = 10){
   #Add reduction to seurat object
   newObject[["pca"]] <- CreateDimReducObject(embeddings = T.matrix, key = "PCA_", assay = DefaultAssay(newObject))
   
-  #return Seurat object in reductions->pca
+  #return Seurat object with pca reduction included in reductions->pca
   return(newObject)
 }
 
@@ -107,7 +279,7 @@ oldSamples[['OldNew']] <- 'Old'
 all46 <- merge(oldSamples, newSamples)
 
 #Scale and run pca on new samples in space of old samples for consistency
-newSamples <- ScaleAndProjectPCA(newSamples, oldSamples)
+newSamples <- scaleRegressAndProjectPCA(newSamples, oldSamples)
 
 #Correct the umap embeddings of the old samples to match Meghan's previously computed embeddings
 early.umap$embedding <- oldSamples@reductions[['umap']]@cell.embeddings
@@ -119,7 +291,7 @@ all46@reductions[['pca']] <- CreateDimReducObject(embeddings = all_pca_embedding
                                                   key = "PCA_", assay = DefaultAssay(all46))
 
 #Plot in pca space and save
-pdf(paste0(filedir,'pcaCombined_noHarmony.pdf'), width=10, height=6)
+pdf(paste0(filedir,'pcaCombined', tag, '.pdf'), width=10, height=6)
 print(DimPlot(all46, reduction = 'pca', group.by = 'OldNew'))
 dev.off()
 
@@ -130,9 +302,6 @@ row.names(newSamples.umap) <- row.names(newSamples@reductions[['pca']]@cell.embe
 #add umap reduction to new samples seurat object
 newSamples@reductions[['umap']] <- CreateDimReducObject(embeddings = newSamples.umap, 
                                                         key = "UMAP_", assay = DefaultAssay(newSamples))
-
-#save the model for reproducibility
-save_uwot(early.umap, paste0(filedir,'umapModel'))
 
 #Combine the umap embeddings of new and old samples (computed using same fn.)
 early.umap_embeddings <- data.frame(early.umap[['embedding']])
@@ -147,7 +316,7 @@ all46@reductions[['umap']] <- CreateDimReducObject(embeddings = all_umap_embeddi
                                                    key = 'UMAP_', assay = DefaultAssay(all46))
 
 #Plot umap of all samples and save
-pdf(paste0(filedir, 'umapCombined_noHarmony.pdf'), width=10, height=6)
+pdf(paste0(filedir, 'umapCombined', tag, '.pdf'), width=10, height=6)
 print(DimPlot(all46, reduction = 'umap', group.by = "OldNew"))
 dev.off()
 
@@ -189,7 +358,7 @@ clusterInfo$X <- as.factor(clusterInfo$X)
 all46[['clusters_noHarmony_res.0.05_30Neighbors']] <- clusterInfo$X
 
 #Plot umap with clusters and save
-pdf(paste0(filedir,'umapCombinedClustered_NoHarmony_30Neighbors.pdf'), width=10, height=6)
+pdf(paste0(filedir,'umapCombinedClustered', tag, '.pdf'), width=10, height=6)
 print(DimPlot(all46, reduction = 'umap', group.by = 'clusters_noHarmony_res.0.05_30Neighbors'))
 dev.off()
 
@@ -228,9 +397,9 @@ fulltab <- cbind(fulltab, type)
 A <- fulltab %>% group_by(cluster) %>% dplyr::count(type)
 
 # saving matrix/table A as a CSV file that will later be read into Julia for diversity calculations
-divout <- paste(filedir,"CellBreakdown_PerClusterPerType_res-0.05_layeringOnNewSamples_noHarmony_30Neighbors",date,".csv",sep="") 
+divout <- paste(filedir,"CellBreakdown_PerClusterPerType_res-0.05_layeringOnNewSamples",tag,date,".csv",sep="") 
 write.csv(A, file=divout)
 write.csv(all46@reductions[['umap']]@cell.embeddings, paste0(filedir, "umap_EmbeddingsAll_layeredNewSamples_noHarmony", date, '.csv'))
 
 #Save rds file of all the samples (optional)
-#saveRDS(all46, '/Users/4472241/scCode/layerUMAP+Clustering/all_46_samples_umap_layered.rds')
+saveRDS(all46, paste0(filedir, 'all_46_samples_umap_layered', tag, '.rds'))
