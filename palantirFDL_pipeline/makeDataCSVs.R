@@ -11,8 +11,11 @@ library(raster)
 
 rm(list = ls())
 
+#Load the seurat object and split by sample
 allSeurat <- readRDS('/Users/4472241/scCode/setNewClustering+keepOldUMAP/NewClusteringOldUMAP_04-30-2021_all_46_samples_umap_layered_noHarmony.rds')
 split.list <- SplitObject(allSeurat, split.by = "orig.ident")
+
+#Ugly but safest way to make sure the patients are aligned in the correct order
 split.list_ordered <- list()
 split.list_ordered[["Normal_1"]] <- split.list[["SettyPt1"]]
 split.list_ordered[["Normal_2"]] <- split.list[["SettyPt2"]]
@@ -61,8 +64,7 @@ split.list_ordered[["CMML_37"]] <- split.list[["SF14080400065"]]
 split.list_ordered[["CMML_38"]] <- split.list[["SF15010200008"]]
 split.list_ordered[["CMML_39"]] <- split.list[["SF13070900171"]]
 
-names(split.list_ordered)
-
+#Include the genes that we want to visualize
 gatingGenes <- c("PTPRC", "CD34", "CD38", "IL3RA", "THY1", "ITGA6")
 miscGenes <- c("MPO", "JUN", "CD79A", "PLAUR", "GATA1", "IRF8", "EBF1", "CLEC12A", "IL10",
                "IL1A", "IL1B", "IL1RN", "FOS", "ATF1", "JDP2", "SEMA4D")
@@ -71,94 +73,36 @@ panelA <- c('CCR2', 'CSF2RA', 'HAVCR2', 'TLR2', "TNFRSF1B", 'CSF1R', 'IFNGR1', '
             'IL15RA', 'FLT3', 'CXCR4', 'CXCR2',
             'CXCR1', 'IL18R1', 'TNFRSF1A', 'IL6R')
 
-#Make csv of the whole thing
-#allSeurat <- FindVariableFeatures(allSeurat)
-#Include variable genes as well as receptor genes (panel A) and genes used to gate receptors
-#Gating Genes: PTPRC, CD34, CD38, IL3RA, THY1, ITGA6
-#allSeurat.counts <- t(allSeurat@assays[['RNA']]@counts)[,unique(c(VariableFeatures(allSeurat),gatingGenes, 
-#                                                        miscGenes, panelA))]
-#allSeurat.matrix <- as.matrix(allSeurat.counts)
-#write.csv(allSeurat.matrix, paste0('/Users/4472241/scCode/runPalantir/countData/cmml_All_Counts.csv'))
-
-#namesInClus3_9 <- row.names(allSeurat.matrix)[c(as.numeric(as.character(allSeurat@meta.data[["clusters_noHarmony_res.0.05_30Neighbors"]]))==3,
-#                                           as.numeric(as.character(allSeurat@meta.data[["clusters_noHarmony_res.0.05_30Neighbors"]]))==9)]
-#write.csv(namesInClus3_9, paste0('/Users/4472241/scCode/runPalantir/countData/cmml_All_namesInClus3_9.csv'))
-
-
 for (i in 1:39){
+  #Get cmml seurat object for individual sample
   cmml <- split.list[[7+i]]
   
+  #Find variable features
   cmml <- FindVariableFeatures(cmml)
   #Include variable genes as well as receptor genes (panel A) and genes used to gate receptors
   #Gating Genes: PTPRC, CD34, CD38, IL3RA, THY1, ITGA6
   cmml.counts <- t(cmml@assays[['RNA']]@counts)[,unique(c(VariableFeatures(cmml),gatingGenes, 
                                                             miscGenes, panelA))]
   cmml.matrix <- as.matrix(cmml.counts)
+  #Write count matrix to csv
   write.csv(cmml.matrix, paste0('/Users/4472241/scCode/runPalantir/countData/cmml',i,'Counts.csv'))
   
+  #Write cell names of cells in cluster 2 to csv
   namesInClus2 <- row.names(cmml.matrix)[as.numeric(as.character(cmml@meta.data[["RNA_snn_res.0.05"]]))==2]
   write.csv(namesInClus2, paste0('/Users/4472241/scCode/runPalantir/countData/cmml',i,'_namesInClus2.csv'))
 }
 
 for (i in 1:7){
+  #Get seurat object of individual sample, find var. features and add genes we want to visualize
   normal <- split.list[[i]]
   normal <- FindVariableFeatures(normal)
   normal.counts <- t(normal@assays[['RNA']]@counts)[,unique(c(VariableFeatures(normal),gatingGenes, 
                                                               miscGenes, panelA))]
   normal.matrix <- as.matrix(normal.counts)
+  #Write count matrix to csv
   write.csv(normal.matrix, paste0('/Users/4472241/scCode/runPalantir/countData/normal',i,'Counts.csv'))
   
+  #Get cluster 2 cells and write their cell names to csv
   namesInClus2 <- row.names(cmml.matrix)[as.numeric(as.character(cmml@meta.data[["RNA_snn_res.0.05"]]))==2]
   write.csv(namesInClus2, paste0('/Users/4472241/scCode/runPalantir/countData/normal',i,'_namesInClus2.csv'))
 }
-
-check <- allSeurat@assays[['RNA']]@counts[c(gatingGenes, miscGenes, panelA),]
-
-
-
-
-
-############## Make txt files for COMET analysis ##############################
-#split_by_cluster <- SplitObject(allSeurat, split.by = "RNA_snn_res.0.05")
-
-panelA <- c("IL3RA", "KIT", "MPL", "HAVCR2", "CSF2RA", 'CCR2', 'IL2RG', 'IL5RA',
-            'IL15RA', 'TLR2', 'FLT3', 'CSF1R', 'CXCR4', 'CSF3R', 'CXCR2',
-            'CXCR1', 'IL18R1', 'IFNGR1', 'TLR4', 'TNFRSF1A', 'TNFRSF1B', 'IL6R',
-            'CD34', 'CD38', 'PTPRC', 'IL3RA', 'THY1', 'ITGA6')
-
-clus2.data <- allSeurat@assays[['RNA']]@data[,(allSeurat@meta.data[["RNA_snn_res.0.05"]] == "2")]
-clus2.umap <- allSeurat@reductions[["umap"]]@cell.embeddings[allSeurat@meta.data[["RNA_snn_res.0.05"]] == "2",]
-
-nonClus2.data <- allSeurat@assays[['RNA']]@data[,(allSeurat@meta.data[["RNA_snn_res.0.05"]] != "2")]
-
-nonClus2.umap <- allSeurat@reductions[["umap"]]@cell.embeddings[allSeurat@meta.data[["RNA_snn_res.0.05"]] != "2",]
-
-nSamples <- 64999-dim(clus2.data)[2]
-
-nonClus2.cluster <- data.frame("X" = rep(0, nSamples))
-clus2.cluster <- data.frame("X" = rep(1, dim(clus2.data)[2]))
-
-clus2.data.df <- data.frame(clus2.data[panelA,])
-nonClus2.data.df <- data.frame(nonClus2.data[panelA,])
-cellsKeep <- sample(length(nonClus2.data.df), nSamples)
-nonClus2.data.DS <- nonClus2.data.df[,cellsKeep]
-nonClus2.umap.DS <- data.frame(nonClus2.umap[cellsKeep,])
-
-#Check the names of cells to make sure they match, Note: they don't but we know why ("X" added in front)
-#colnames(nonClus3.data.DS)[!(colnames(nonClus3.data.DS) %in% row.names(nonClus3.umap.DS))]
-#row.names(nonClus3.umap.DS)[!row.names(nonClus3.umap.DS) %in% colnames(nonClus3.data.DS)]
-
-markers.df <- cbind(clus2.data.df, nonClus2.data.DS)
-umap.df <- rbind(clus2.umap, nonClus2.umap.DS)
-clusters.df <- rbind(clus2.cluster, nonClus2.cluster)
-row.names(clusters.df) <- row.names(umap.df)
-#Get rid of the weird "X" in front of the names introduced by R for ones that start with number
-colnames(markers.df) <- row.names(umap.df)
-
-
-write.table(markers.df,"/Users/4472241/scCode/CometNewClustering/isolateClus2/res=0.05_markers.txt",sep="\t",row.names=T, quote = F)
-write.table(umap.df,"/Users/4472241/scCode/CometNewClustering/isolateClus2/res=0.05_umap.txt",sep="\t",row.names=T, col.names =F, quote = F)
-write.table(clusters.df, "/Users/4472241/scCode/CometNewClustering/isolateClus2/res=0.05_clusters.txt",sep="\t",row.names=T, col.names =F, quote = F)
-write.table(panelA, "/Users/4472241/scCode/CometNewClustering/isolateClus2/res=0.05_genes.txt",sep="\t",row.names=F, col.names =F, quote = F)
-
-
