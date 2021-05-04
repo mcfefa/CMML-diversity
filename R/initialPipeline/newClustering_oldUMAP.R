@@ -19,8 +19,7 @@ tag <- '_noHarmony_30Neighbors_AllSamples'
 #Open the fully umapped file
 allSeurat <- readRDS(paste0(filedir, 'all_46_samples_umap_layered', tag, '.rds'))
 
-#allNew <- readRDS('/Users/4472241/scCodeNewClustering_04-28-2021_all_46_samples_umap_layered_noHarmony_30Neighbors_AllSamples.rds')
-
+#Remove old clustering
 allSeurat@meta.data$RNA_snn_res.0 <- NULL
 allSeurat@meta.data$RNA_snn_res.0.01 <- NULL
 allSeurat@meta.data$RNA_snn_res.0.025 <- NULL
@@ -37,7 +36,7 @@ allSeurat@meta.data$RNA_snn_res.0.5 <- NULL
 allSeurat@meta.data$RNA_snn_res.0.55 <- NULL
 allSeurat@meta.data$RNA_snn_res.0.6 <- NULL
 
-
+#Set new clustering at various resolutions
 allSeurat <- FindNeighbors(allSeurat)
 res_vec <- c(0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15)
 for (res in res_vec){
@@ -61,39 +60,41 @@ allSeurat$HMA_Normal_Other <- plyr::mapvalues(
   to = c("Normal", 'HMA', 'CMML', 'CMML', 'CMML')
 )
 
-
-pdf(paste0('/Users/4472241/scCode/setNewClustering+keepOldUMAP/HMA_or_Other_coloredUMAP.pdf'), width=9, height=7)
+#Plot UMAP showing HMA, Normal, CMML/Other(Rux, Chemo)
+pdf(paste0('/Users/4472241/scCode/setNewClustering+keepOldUMAP/HMA_or_Norm_or_Other_coloredUMAP.pdf'), width=9, height=7)
 print(DimPlot(allSeurat, reduction = 'umap', group.by = 'HMA_Normal_Other', cols = c('grey', 'red', 'black')))
 dev.off()
 
-pdf(paste0('/Users/4472241/scCode/setNewClustering+keepOldUMAP/oldUmap_newClustering_res=0.05_clus2_vs_Other.pdf'), width=9, height=7)
-print(DimPlot(allSeurat, reduction = 'umap', group.by = 'RNA_snn_res.0.05', cols = c('grey', 'grey', 
-                                                                                     'red', 'grey', 'grey', 'grey', 'grey')))
+#Plot UMAP of resolution = 0.05 clustering
+pdf(paste0('/Users/4472241/scCode/setNewClustering+keepOldUMAP/oldUmap_newClustering_res=0.05.pdf'), width=9, height=7)
+print(DimPlot(allSeurat, reduction = 'umap', group.by = 'RNA_snn_res.0.05'))
 dev.off()
 
-
+#Plot clustree
 pdf('/Users/4472241/scCode/setNewClustering+keepOldUMAP/newClustering_all46_ClustreePlot.pdf', width = 9, height = 7)
 clustree(allSeurat, prefix = "RNA_snn_res.")
 dev.off()
 
+#Save the seurat file with the new clustering
 saveRDS(allSeurat, '/Users/4472241/scCode/setNewClustering+keepOldUMAP/NewClusteringOldUMAP_04-30-2021_all_46_samples_umap_layered_noHarmony.rds')
 #allSeurat <- readRDS('/Users/4472241/scCode/setNewClustering+keepOldUMAP/NewClusteringOldUMAP_04-30-2021_all_46_samples_umap_layered_noHarmony.rds')
 
-#Extract data from clustree
+#Extract data from clustree and save as csv
 graph <- clustree(allSeurat, prefix = "RNA_snn_res.", return = "graph")
 edges <- graph %>%
   activate("edges") %>%
   as.data.frame()
 colnames(edges)
-
 write.csv(graph,'/Users/4472241/scCode/setNewClustering+keepOldUMAP/graphClustreeData.csv')
 
-#Now re-run UMAP
+#Now re-run UMAP, if desired (looks almost the same)
 allSeurat <- RunUMAP(allSeurat, dims = 1:100)
 
+#Plot new umap with new clustering, notice umap doesn't change much
 pdf('/Users/4472241/scCode/setNewClustering+keepOldUMAP/newUMAP_newClustering_all46_res.0.05.pdf', width = 9, height = 7)
 DimPlot(allSeurat, reduction = 'umap', group.by = 'RNA_snn_res.0.05')
 dev.off()
 
+#Save seurat object as rds with new UMAP
 saveRDS(allSeurat, '/Users/4472241/scCode/setNewClustering+keepOldUMAP/NewClusteringNewUMAP_04-30-2021_all_46_samples_noHarmony.rds')
 
