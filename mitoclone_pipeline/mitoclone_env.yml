@@ -1,4 +1,4 @@
-name: mitocloneV2
+name: mitoclone_env
 channels:
   - gurobi
   - anaconda
@@ -250,5 +250,5 @@ dependencies:
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.8=ha95c52a_1
-prefix: /home/4472241/.conda/envs/mitocloneV2
+prefix: /home/4472241/.conda/envs/mitoclone_env
 
