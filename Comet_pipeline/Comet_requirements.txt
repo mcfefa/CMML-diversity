@@ -1,3 +1,8 @@
+# To re-create: 
+# $ virtualenv Comet_env
+# $ source Comet_env/bin/activate
+# (Comet_env)$ pip install -r path/to/requirements.txt
+
 adjustText==0.7.3
 atomicwrites==1.1.5
 attrs==18.1.0
