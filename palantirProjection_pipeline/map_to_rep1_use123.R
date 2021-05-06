@@ -214,7 +214,8 @@ for (i in 1:length(rdsFileList)){
   #Set filter min/max
   mean(cmml@meta.data$nFeature_RNA, na.rm=TRUE) + 2*sd(cmml@meta.data$nFeature_RNA, na.rm=TRUE) # [1] 3326.408
   nFeatUpperN <- mean(cmml@meta.data$nFeature_RNA, na.rm=TRUE) + 2*sd(cmml@meta.data$nFeature_RNA, na.rm=TRUE) 
-  nFeatLowerN <- 200
+  nFeatLowerN <- 200 #Unnecessary because we set min.genes to 315 anyway in a few lines
+  #To match setty, set mito to 0.2 (instead of 0.25 which we use in our CMML pipeline)
   perMitoUpperN <- 0.20
   
   #filter out those that don't make the cut
@@ -223,7 +224,9 @@ for (i in 1:length(rdsFileList)){
   #Get cmml data
   cmml.data <- cmml@assays[["RNA"]]@data
   cmml.data <- data.frame(cmml.data)
+  #To match setty paper, remove cells with less than 1000 molecules
   cmml.data <- cmml.data[,colSums(cmml.data)>1000]
+  #To match setty paper, remove "low-complexity" cells mapping to less than 315 genes (Why 315???)
   cmml <- CreateSeuratObject(cmml.data, min.genes = 315)
   cmml[["Identity"]] <- paste0("cmml",i)
   cmml[["Integration"]] <- "Query"
