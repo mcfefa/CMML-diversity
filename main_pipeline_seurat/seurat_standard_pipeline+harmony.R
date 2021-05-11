@@ -51,7 +51,7 @@ allSeurat <- RunHarmony(allSeurat, group.by.vars = "tech")
 allSeurat <- FindNeighbors(allSeurat, dims = 1:50, reduction = "harmony")
 resVec <- c(0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2)
 for (res in resVec){
-  allSeurat <- FindClusters(allSeurat, resolution = .15)
+  allSeurat <- FindClusters(allSeurat, resolution = res)
 }
 
 pdf(paste0(outdir, 'clustree_standard_pipeline_withHarmony.pdf'), width = 9, height = 7)
