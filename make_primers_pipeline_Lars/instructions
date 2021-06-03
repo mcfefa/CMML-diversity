@@ -3,6 +3,8 @@
 # Move primer3_core into the conda env bin (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster)
 #Install makeblastdb and blastn tools using instructions here: (https://www.ncbi.nlm.nih.gov/books/NBK569861/#intro_Installation.Source_tarball Source: https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 # Move into same conda env bin as primer3_core after making it (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster)
+# Note: I built primer3_core from source, but for blastn/makeblastdb I downloaded the 'ncbi-blast-2.11.0+-x64-linux.tar.gz' file to unzip into executable, which I then moved
 
-#Make .bed file with regions to subset bam files
+#Make .bed file with regions to subset bam files (manually, format: chr##\tStartPos\tEndPos\t.\t0\t.)
+#Subset bam files with samtools (samtools view -b -L regions.bed CMML_1.bam > CMML_1.subset.bam)
 #Run distance_polyA.sh (consult README from Lars)
