@@ -1,5 +1,5 @@
 #Install all R packages (those loaded in .R files) on cluster in conda env (this required some debugging on Moffitt Cluster)
-#Download and install primer3_core (https://vcru.wisc.edu/simonlab/bioinformatics/programs/primer3/primer3_manual.htm#installLinux)
+#Download and install primer3_core (https://vcru.wisc.edu/simonlab/bioinformatics/programs/primer3/primer3_manual.htm#installLinux http://sourceforge.net/projects/primer3/)
 # Move primer3_core into the conda env bin (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster)
 #Install makeblastdb and blastn tools using instructions here: (https://www.ncbi.nlm.nih.gov/books/NBK52640/ Source: https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 # Move into same conda env bin as primer3_core after making it (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster)
