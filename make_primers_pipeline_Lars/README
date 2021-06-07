@@ -56,6 +56,17 @@ them in IGV. You can see an example of this in 'browser_images/primers_igv.png'.
 
 ______________________________________________________________________________________________________________
 
+The file, pipeline_polyA_distance.sh, as well as, polyA_fileGeneration.R,
+allow you to take an input csv file with several samples mutational info and create the individual sample
+variant csv file, bed file (for subsetting the bam file), and transfers the rds file to the directory.
+
+From there, subset_bamFiles.sh takes the bam file and the bed file and subsets to only show the mutated genes.
+
+Then, every sample should have a folder with all the necessary info for input to Lars' pipeline. R files have been tailored to our
+specific sequencing (## instead of chr_##, etc.). From here it's easy to generate the distance to polyA and the primers.
+
+
+
 Additional Instructions/intepretation (Brian)
 
 Convert mutation location from grch37 to grch38 using crossMap
