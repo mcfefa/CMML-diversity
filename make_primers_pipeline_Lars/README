@@ -71,6 +71,7 @@ Move into same conda env bin as primer3_core after making it (/home/4472241/.con
 Note: I built primer3_core from source, but for blastn/makeblastdb I downloaded the 'ncbi-blast-2.11.0+-x64-linux.tar.gz' file to unzip into executable, which I then moved
 
 Make .bed file with regions to subset bam files (manually, format: "##\tStartPos\tEndPos" Note: just put chromosome number, not chr##)
+Load samtools (Note: may have to install for other OS): module load samtools/1.9
 Subset bam files with samtools (samtools view -b -L CMML_1.bed CMML_1.bam > CMML_1.subset.bam)
 Make bai file: samtools index CMML_1.subset.bam > CMML_1.subset.bam.bai
 Run distance_polyA.sh (consult README from Lars)
