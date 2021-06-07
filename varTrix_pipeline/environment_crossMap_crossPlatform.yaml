@@ -1,0 +1,26 @@
+name: crossMap
+channels:
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1
+  - ca-certificates=2021.4.13
+  - certifi=2020.12.5
+  - libffi=3.3
+  - ncurses=6.2
+  - openssl=1.1.1k
+  - pip=21.0.1
+  - python=3.6.13
+  - readline=8.1
+  - setuptools=52.0.0
+  - sqlite=3.35.4
+  - tk=8.6.10
+  - wheel=0.36.2
+  - xz=5.2.5
+  - zlib=1.2.11
+  - pip:
+    - bx-python==0.8.11
+    - crossmap==0.5.4
+    - pybigwig==0.3.18
+    - pysam==0.16.0.1
+prefix: /home/4472241/.conda/envs/crossMap
+
