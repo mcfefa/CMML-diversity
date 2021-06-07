@@ -4,6 +4,7 @@
 
 conda activate liftOver
 
+# Run Crossmap (see details: http://crossmap.sourceforge.net/#convert-vcf-format-files)
 CrossMap.py  vcf  GRCh37_to_GRCh38.chain.gz  ./varTrix_CMML_20/145249.IWG-219_S36.smCounter.anno.vcf  genome.fa  ./varTrix_CMML_20/out.hg38.145249.IWG-219_S36.smCounter.anno.vcf
 
 #Then manually convert "chr#" to "#" in hg38 vcf file (if needed, depends on vcf file)
