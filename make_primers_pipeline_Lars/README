@@ -58,7 +58,10 @@ ________________________________________________________________________________
 
 Additional Instructions/intepretation (Brian)
 
-Convert mutation location from grch37 to grch38 using crossMap?
+Convert mutation location from grch37 to grch38 using crossMap
+Take MAF with position of mutation (as well as other columns). Put "#" in front of MAF file header line so it doesn't cause error.
+Run convertMAF_togrch38.sh file to convert position from grch37 to grch38. Need crossMap conda env for this (see vartrix pipeline if errors).
+Make bed files manually for each sample from the grch38 positions output by crossMap (see below). 
 
 Install all R packages (those loaded in .R files) on cluster in conda env (this required some debugging on Moffitt Cluster)
 Download and install primer3_core (https://vcru.wisc.edu/simonlab/bioinformatics/programs/primer3/primer3_manual.htm#installLinux http://sourceforge.net/projects/primer3/)
