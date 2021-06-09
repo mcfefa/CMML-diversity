@@ -15,6 +15,8 @@ allSeurat$clus2 <- plyr::mapvalues(
   to = c(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 )
 
+#Run differential expression. group.by specifies which metadata, ident.1 specifies the group within that metadata.
+#In this way, we run DE between cluster 2 and all other cells (ident.2 blank means run against all other cells). 
 clus2.de.markers <- FindMarkers(allSeurat, group.by = "clus2", ident.1 = 1)
 
 write.csv(clus2.de.markers, '/Users/4472241/scCode/cluster2_DE/clus2.de.markers.csv')
