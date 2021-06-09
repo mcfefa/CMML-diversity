@@ -1,0 +1,2 @@
+For setting up env, if requirements.txt does not work on the OS, see COMET website and installation instructions: https://hgmd.readthedocs.io/en/latest/quickstart.html#direct-installation
+This should be fairly straightforward. All details on running COMET are available in the docs. The specific way we did it is in the .R and .sh files
