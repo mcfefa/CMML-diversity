@@ -1,3 +1,7 @@
+Note: Nothing is in a directory, as it originally was, so we will have to modify the examples to run. 
+Also, need to access a seurat object (too big too upload here), a bam file (also too big), and a gtf file 
+with the info about GRCh38 (too big, should be readily available online).
+
 This folder contains all necessary data and scripts to generate primers to amplify mutations from
 3' scRNAseq from 10x. The pipeline consists in computing the distance from the mutation to the polyA as well as
 the raw counts per cell and then design primers to amplify the manually selected mutations of interest.
