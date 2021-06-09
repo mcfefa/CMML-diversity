@@ -6,9 +6,9 @@ In addition to this file, we also need: bam and bai files for each sample (mappe
 1. The first step is to convert the MAF files to GRCh38. For this we use crossMap. The info for creating a conda environment with this tool is detailed in `crossMap_crossPlatform.yml`. The bash script for converting is given by `convert_maf_toGRCh38.sh`
 
 2. Then, we take the GRCh38 MAF file and use it as input for the shell script `pipeline_polyA_fileGeneration.sh`. This will call an R script, `polyA_fileGeneration.R` which:
-  1. makes a bed file for each sample containing the positions of the genes we look at in that sample. This will be used for subsetting the bam files. This uses biomaRt and the server can sometimes be inaccessible, so it might take a few runs to get bed files for all the samples.
-  2. Makes a csv with the required variant information, CHROM, POS, symbol. Note that POS is now the GRCh38 position.
-  3. Gives the path to the seurat object for the given sample. This won't be useful once the platform changes, but can be altered for the new workflow.
+  * makes a bed file for each sample containing the positions of the genes we look at in that sample. This will be used for subsetting the bam files. This uses biomaRt and the server can sometimes be inaccessible, so it might take a few runs to get bed files for all the samples.
+  * Makes a csv with the required variant information, CHROM, POS, symbol. Note that POS is now the GRCh38 position.
+  * Gives the path to the seurat object for the given sample. This won't be useful once the platform changes, but can be altered for the new workflow.
   
 3. Now we are ready to subset the bam files. The script `subset_bamFiles.sh` will do this for all of the bam files which we have DNA sequencing for. Note: Change the directory for the updated workflow so it puts the subsetted bam file in the right spot. 
 
