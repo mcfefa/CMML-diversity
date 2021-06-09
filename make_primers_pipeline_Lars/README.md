@@ -1,6 +1,6 @@
 We start with a list of annotated variants which we want to focus on in MAF format (`MAF_All_GRCh37.maf`, derived from Eric's annotated csv `tru_variants_scRNA.csv`). This file contains info on the chromosome, symbol, position (as well as a bunch of other things) for all of the IWG samples. Note that for us, these are GRCh37, not GRCh38.
 
-In addition to this file, we also need: bam and bai files for each sample (mapped to GRCh38), a seurat object for the sample, and a gtf file for GRCh 38.
+In addition to this file, we also need: bam and bai files for each sample (mapped to GRCh38), a seurat object for the sample, and a gtf file for GRCh 38 (CHR).
 
 
 1. The first step is to convert the MAF files to GRCh38. For this we use crossMap. The info for creating a conda environment with this tool is detailed in `crossMap_crossPlatform.yml`. The bash script for converting is given by `convert_maf_toGRCh38.sh`
