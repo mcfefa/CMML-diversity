@@ -54,35 +54,3 @@ of the primers is also exported.
 I usually also check that the order of the primer makes sense and that they fall into exons by loading
 them in IGV. You can see an example of this in 'browser_images/primers_igv.png'.
 
-______________________________________________________________________________________________________________
-
-The file, pipeline_polyA_distance.sh, as well as, polyA_fileGeneration.R,
-allow you to take an input csv file with several samples mutational info and create the individual sample
-variant csv file, bed file (for subsetting the bam file), and transfers the rds file to the directory.
-
-From there, subset_bamFiles.sh takes the bam file and the bed file and subsets to only show the mutated genes.
-
-Then, every sample should have a folder with all the necessary info for input to Lars' pipeline. R files have been tailored to our
-specific sequencing (## instead of chr_##, etc.). From here it's easy to generate the distance to polyA and the primers.
-
-
-
-Additional Instructions/intepretation (Brian)
-
-Convert mutation location from grch37 to grch38 using crossMap
-Take MAF with position of mutation (as well as other columns). Put "#" in front of MAF file header line so it doesn't cause error.
-Run convertMAF_togrch38.sh file to convert position from grch37 to grch38. Need crossMap conda env for this (see vartrix pipeline if errors).
-Make bed files manually for each sample from the grch38 positions output by crossMap (see below). 
-
-Install all R packages (those loaded in .R files) on cluster in conda env (this required some debugging on Moffitt Cluster)
-Download and install primer3_core (https://vcru.wisc.edu/simonlab/bioinformatics/programs/primer3/primer3_manual.htm#installLinux http://sourceforge.net/projects/primer3/)
-Move primer3_core into PATH (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster, /usr/local/bin/primer3_core on my mac)
-Install makeblastdb and blastn tools using instructions here: (https://www.ncbi.nlm.nih.gov/books/NBK52640/ Source: https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-Move into same conda env bin as primer3_core after making it (/home/4472241/.conda/envs/exome_v2/bin/primer3_core on Moffitt Cluster)
-Note: I built primer3_core from source, but for blastn/makeblastdb I downloaded the 'ncbi-blast-2.11.0+-x64-linux.tar.gz' file to unzip into executable, which I then moved
-
-Make .bed file with regions to subset bam files (manually, format: "##\tStartPos\tEndPos" Note: just put chromosome number, not chr##)
-Load samtools (Note: may have to install for other OS): module load samtools/1.9
-Subset bam files with samtools (samtools view -b -L CMML_1.bed CMML_1.bam > CMML_1.subset.bam)
-Make bai file: samtools index CMML_1.subset.bam > CMML_1.subset.bam.bai
-Run distance_polyA.sh (consult README from Lars)
