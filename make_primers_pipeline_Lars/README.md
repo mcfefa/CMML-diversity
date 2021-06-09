@@ -1,9 +1,9 @@
 We start with a list of annotated variants which we want to focus on in MAF format (`MAF_All_GRCh37.maf`, derived from Eric's annotated csv `tru_variants_scRNA.csv`). This file contains info on the chromosome, symbol, position (as well as a bunch of other things) for all of the IWG samples. Note that for us, these are GRCh37, not GRCh38.
 
-In addition to this file, we also need: bam and bai files for each sample (mapped to GRCh38), a seurat object for the sample, and a gtf file for GRCh 38 (CHR).
+In addition to this file, we also need: bam and bai files for each sample (mapped to GRCh38), a seurat object for the sample, a chain.gz file for converting GRCh37 to GRCh38 `GRCh37_to_GRCh38.chain.gz`, and a gtf file for GRCh 38 (CHR).
 
 
-1. The first step is to convert the MAF files to GRCh38. For this we use crossMap. The info for creating a conda environment with this tool is detailed in `crossMap_crossPlatform.yml`. The bash script for converting is given by `convert_maf_toGRCh38.sh`
+1. The first step is to convert the MAF files to GRCh38. For this we use crossMap. The info for creating a conda environment with this tool is detailed in `crossMap_crossPlatform.yml`. The bash script for converting is given by `convert_maf_toGRCh38.sh`. Make sure it has the correct path to `GRCh37_to_GRCh38.chain.gz`
 
 2. Then, we take the GRCh38 MAF file and use it as input for the shell script `pipeline_polyA_fileGeneration.sh`. This will call an R script, `polyA_fileGeneration.R` which:
   * makes a bed file for each sample containing the positions of the genes we look at in that sample. This will be used for subsetting the bam files. This uses biomaRt and the server can sometimes be inaccessible, so it might take a few runs to get bed files for all the samples.
