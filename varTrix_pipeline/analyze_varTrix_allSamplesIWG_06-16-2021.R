@@ -171,12 +171,12 @@ for (i in 17:17){
       summary.all <- rbind(summary.all, summary.df)
     }
     
-    #pdf(paste0(outdir, 'palantirFDL_mutationColored_CMML_', cmml_number, '_cut2dfColumn_',k,'.pdf'))
-    #print(ggplot(combine.df, aes(x=X, y=Y, color = Mutated))+ geom_point(size = .2) +
-    #        theme(panel.background = element_rect(fill = "white"))+
-    #        scale_color_manual(values=cols)+
-    #        ggtitle(paste0(colnames(cut2.df)[k])))
-    #dev.off()
+    pdf(paste0(outdir, 'palantirFDL_mutationColored_CMML_', cmml_number, '_cut2dfColumn_',k,'.pdf'))
+    print(ggplot(combine.df, aes(x=X, y=Y, color = Mutated))+ geom_point(size = .2) +
+            theme(panel.background = element_rect(fill = "white"))+
+            scale_color_manual(values=cols)+
+            ggtitle(paste0(colnames(cut2.df)[k])))
+    dev.off()
     
     
   }
