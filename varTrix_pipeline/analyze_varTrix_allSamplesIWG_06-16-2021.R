@@ -19,7 +19,7 @@ list_bam <- c("CMML_1", "CMML_2", "CMML_3", "CMML_9", "CMML_10", "CMML_11",
 
 allSeurat <- readRDS('/Users/4472241/scCode/redoEntirePipeline_05-05-2021/standard_pipeline_withHarmony/seuratObj_05-11-2021_postStandardPipeline_withHarmony_allSamples_39+8.rds')
 
-for (i in 4:length(list_bam)){
+for (i in 1:length(list_bam)){
   countCheck <- 0
   
   #Set dir and get file names (only file in dir, use list.files)
