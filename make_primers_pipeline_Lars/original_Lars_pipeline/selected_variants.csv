@@ -1,3 +1,0 @@
-symbol,CHROM,POS,counts_cell,distance_3_end,flag,ref,alt,consequence,af_tumor,cancer_gene,cosmic_id,FILTER,read_depth
-DNMT3A,chr2,25234373,0.38444924406047515,2,multiple_polyAs,C,T,nonsynonymous_SNV,0.515,yes,COSV53036153,germline;normal_artifact,165
-NPM1,chr5,171410539,11.316414686825054,171,PASS,C,CTCTG,frameshift_insertion,0.45,no,.,germline,18
