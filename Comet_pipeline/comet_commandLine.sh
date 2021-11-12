@@ -1,10 +1,10 @@
 #Start screen to be able to go back and check work
 screen 
 
-#Request job, big memory, four hours is more than enough
+#Request job on big memory queue, four hours is more than enough
 qsub -I -q bigmemQ -l nodes=1:ppn=2 -l walltime=4:00:00
 
-#cd to 4472241 home dir on cluster, activate env
+#cd to home dir on cluster, activate env
 cd ~
 source ./Comet_env/bin/activate
 
