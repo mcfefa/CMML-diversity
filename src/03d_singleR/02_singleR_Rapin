@@ -1,6 +1,5 @@
 library(Seurat)
 BiocManager::install("affyio")
-install.packages("affyio")
 library(affyio)
 library(SummarizedExperiment)
 library(SingleR)
