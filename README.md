@@ -9,5 +9,7 @@ Code is written in R and utilizes Linux platforms for some applications.
 ## Getting Started
 The `src` folder contains subfolders with code for the primary and secondary analyses. 
 
+![image](/_assets/CMML-scRNAseq-workflow.jpg)
+
 ## Contributing
 If you would like to improve this code or have any feedback, please file an issue or pull request or you can contact the maintainer at mferrall.fairbanks@bme.ufl.edu. 
