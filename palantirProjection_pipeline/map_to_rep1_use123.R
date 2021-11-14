@@ -188,23 +188,23 @@ reps123 <- readRDS(paste0(filedir,'reps123Integrated.rds'))
 branchProbs_reps123 <- readRDS(paste0(filedir,'branchProbsAll3.rds'))
 diffPot_reps123 <- readRDS(paste0(filedir, 'diffPotential.rds'))
 
-rdsFileList <- c('CMML1_LTB3966_2020-10-15', 'CMML2_LTB4121_2020-10-15', 'CMML3_LTB5109_2020-10-15', 'CMML4_4-J-003_postBMT_2020-10-15',
-                 'CMML5_4-K-001_HMA_2020-10-15', 'CMML6_4-Q-001_HMA_2020-10-15', 'CMML7_5-E-001_HMA_2020-10-15',
-                 'CMML8_5-H-001_2020-10-15', 'CMML9_SF-100109-106293_2020-10-15', 'CMML10_SF-100109-111451_2020-10-15',
-                 'CMML11_SF-100109-110236_2020-10-15', 'CMML12_SF-140401-00158_2020-10-15', 'CMML13_SF-140602-00025_2020-10-15',
-                 'CMML14_SF-120628-00475_2020-10-15', 'CMML15_SF-140722-00012_2020-10-15', 'CMML16_SF-130612-00056_2020-10-15',
-                 'CMML17_4-S-001_HMA_2020-10-15','CMML18_2-V-001_2020-10-15', 'CMML19_SF-141010-00049_2020-10-15',
-                 'CMML20_SF-161129-00158_2020-10-15', 'CMML21_6-AE-001_2020-10-15', 'CMML22_6-AC-001_2020-10-15',
-                 'CMML24_SF-100109-101914_2020-10-15','CMML25_SF-120425-00035_2020-10-15', 'CMML23+26_6-AD-001_2020-10-15',
-                 'CMML27_SF-120926-00014_2020-10-15','CMML28_SF-140318-00065_2020-10-15', 'CMML29_SF-140507-00419_2020-10-15',
-                 'CMML30_SF-160268-00045_2020-10-15', 'CMML31_SF-160722-00003_2020-10-15', 'CMML32_SF-161123-00029_2020-10-15',
-                 'CMML33_SF-130328-00016_2020-10-15', 'CMML34_SF-141104-00108_2020-10-15', 'CMML35_SF-141114-00033_2020-10-15',
-                 'CMML36_SF-140925-00135_2020-10-15', 'CMML37_SF-140613-00036_2020-10-15', 'CMML38_SF-140804-00065_2020-10-15',
-                 'CMML39_SF-150102-00008_2020-10-15', 'CMML40_SF-130709-00171_2020-10-15')
+rdsFileList <- c('CMML1', 'CMML2', 'CMML3', 'CMML4',
+                 'CMML5', 'CMML6', 'CMML7',
+                 'CMML8', 'CMML9', 'CMML10',
+                 'CMML11', 'CMML12', 'CMML13',
+                 'CMML14', 'CMML15', 'CMML16',
+                 'CMML17','CMML18', 'CMML19',
+                 'CMML20', 'CMML21', 'CMML22',
+                 'CMML24','CMML25', 'CMML23+26',
+                 'CMML27','CMML28', 'CMML29',
+                 'CMML30', 'CMML31', 'CMML32',
+                 'CMML33', 'CMML34', 'CMML35',
+                 'CMML36', 'CMML37', 'CMML38',
+                 'CMML39', 'CMML40')
 
 for (i in 1:length(rdsFileList)){
   #Import the file
-  cmml <- readRDS(paste0("/Users/4472241/scCode/",rdsFileList[i],".rds"))
+  cmml <- readRDS(paste0("/data/palantir/",rdsFileList[i],".rds"))
   
   #Find mito percentage in each cell
   mito.genes <- grep(pattern = "^MT-", cmml@assays$RNA@counts@Dimnames[[1]], value = TRUE)
