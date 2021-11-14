@@ -38,22 +38,22 @@ savedir <- "/share/lab_altrock/MeghanCluster/BrianCluster/individual-CMML-rds/"
 CMML1.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML1_LTB3966/outs/filtered_feature_bc_matrix/")
 CMML1 <- CreateSeuratObject(counts = CMML1.data, project = "LTB3966")
 CMML1 <- RenameCells(object=CMML1, add.cell.id="LTB3966")
-saveRDS(CMML1,paste(savedir,"CMML1_LTB3966",date,".rds",sep=""))
+saveRDS(CMML1,paste(savedir,"CMML1.rds",sep=""))
 
 CMML2.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML2_LTB4121/outs/filtered_feature_bc_matrix/")
 CMML2 <- CreateSeuratObject(counts = CMML2.data, project = "LTB4121")
 CMML2 <- RenameCells(object=CMML2, add.cell.id="LTB4121")
-saveRDS(CMML2,paste(savedir,"CMML2_LTB4121",date,".rds",sep=""))
+saveRDS(CMML2,paste(savedir,"CMML2.rds",sep=""))
 
 CMML3.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML3_LTB6169/outs/filtered_feature_bc_matrix/")
 CMML3 <- CreateSeuratObject(counts = CMML3.data, project = "LTB5109")
 CMML3 <- RenameCells(object=CMML3, add.cell.id="LTB5109")
-saveRDS(CMML3,paste(savedir,"CMML3_LTB5109",date,".rds",sep=""))
+saveRDS(CMML3,paste(savedir,"CMML3.rds",sep=""))
 
 CMML4.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML4_4J003v2/outs/filtered_feature_bc_matrix/")
 CMML4 <- CreateSeuratObject(counts = CMML4.data, project = "4J003")
 CMML4 <- RenameCells(object=CMML4, add.cell.id="4J003")
-saveRDS(CMML4,paste(savedir,"CMML4_4-J-003_postBMT",date,".rds",sep=""))
+saveRDS(CMML4,paste(savedir,"CMML4_postBMT.rds",sep=""))
 
 CMML5.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML5_4K001v2/outs/filtered_feature_bc_matrix/")
 CMML5 <- CreateSeuratObject(counts = CMML5.data, project = "4K001")
@@ -63,62 +63,62 @@ saveRDS(CMML5,paste(savedir,"CMML5_4-K-001_HMA",date,".rds",sep=""))
 CMML6.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML6_4Q001/outs/filtered_feature_bc_matrix/")
 CMML6 <- CreateSeuratObject(counts = CMML6.data, project = "4Q001")
 CMML6 <- RenameCells(object=CMML6, add.cell.id="4Q001")
-saveRDS(CMML6,paste(savedir,"CMML6_4-Q-001_HMA",date,".rds",sep=""))
+saveRDS(CMML6,paste(savedir,"CMML6_HMA.rds",sep=""))
 
 CMML7.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML7_5E001v2/outs/filtered_feature_bc_matrix/")
 CMML7 <- CreateSeuratObject(counts = CMML7.data, project = "5E001")
 CMML7 <- RenameCells(object=CMML7, add.cell.id="5E001")
-saveRDS(CMML7,paste(savedir,"CMML7_5-E-001_HMA",date,".rds",sep=""))
+saveRDS(CMML7,paste(savedir,"CMML7_HMA.rds",sep=""))
 
 CMML8.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML8_5H001v2/outs/filtered_feature_bc_matrix/")
 CMML8 <- CreateSeuratObject(counts = CMML8.data, project = "5H001")
 CMML8 <- RenameCells(object=CMML8, add.cell.id="5H001") 
-saveRDS(CMML8,paste(savedir,"CMML8_5-H-001",date,".rds",sep=""))
+saveRDS(CMML8,paste(savedir,"CMML8.rds",sep=""))
 
 CMML9.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML9_SF100109106293/outs/filtered_feature_bc_matrix/")
 CMML9 <- CreateSeuratObject(counts = CMML9.data, project = "SF100109106293")
 CMML9 <- RenameCells(object=CMML9, add.cell.id="SF100109106293")
-saveRDS(CMML9,paste(savedir,"CMML9_SF-100109-106293",date,".rds",sep=""))
+saveRDS(CMML9,paste(savedir,"CMML9.rds",sep=""))
 
 CMML10.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML10_SF100109111451/outs/filtered_feature_bc_matrix/")
 CMML10 <- CreateSeuratObject(counts = CMML10.data, project = "SF100109111451")
 CMML10 <- RenameCells(object=CMML10, add.cell.id="SF100109111451")
-saveRDS(CMML10,paste(savedir,"CMML10_SF-100109-111451",date,".rds",sep=""))
+saveRDS(CMML10,paste(savedir,"CMML10.rds",sep=""))
 
 CMML11.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML11_SF100109110236/outs/filtered_feature_bc_matrix/")
 CMML11 <- CreateSeuratObject(counts = CMML11.data, project = "SF100109110236")
 CMML11 <- RenameCells(object=CMML11, add.cell.id="SF100109110236")
-saveRDS(CMML11,paste(savedir,"CMML11_SF-100109-110236",date,".rds",sep=""))
+saveRDS(CMML11,paste(savedir,"CMML11.rds",sep=""))
 
 CMML12.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML12_SF14040100158/outs/filtered_feature_bc_matrix/")
 CMML12 <- CreateSeuratObject(counts = CMML12.data, project = "SF14040100158")
 CMML12 <- RenameCells(object=CMML12, add.cell.id="SF14040100158")
-saveRDS(CMML12,paste(savedir,"CMML12_SF-140401-00158",date,".rds",sep=""))
+saveRDS(CMML12,paste(savedir,"CMML12.rds",sep=""))
 
 CMML13.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML13_SF14060200025/outs/filtered_feature_bc_matrix/")
 CMML13 <- CreateSeuratObject(counts = CMML13.data, project = "SF14060200025")
 CMML13 <- RenameCells(object=CMML13, add.cell.id="SF14060200025")
-saveRDS(CMML13,paste(savedir,"CMML13_SF-140602-00025",date,".rds",sep=""))
+saveRDS(CMML13,paste(savedir,"CMML13.rds",sep=""))
 
 CMML14.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML14_SF12062800475/outs/filtered_feature_bc_matrix/")
 CMML14 <- CreateSeuratObject(counts = CMML14.data, project = "SF12062800475")
 CMML14 <- RenameCells(object=CMML14, add.cell.id="SF12062800475")
-saveRDS(CMML14,paste(savedir,"CMML14_SF-120628-00475",date,".rds",sep=""))
+saveRDS(CMML14,paste(savedir,"CMML14.rds",sep=""))
 
 CMML15.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML15_SF14072200012/outs/filtered_feature_bc_matrix/")
 CMML15 <- CreateSeuratObject(counts = CMML15.data, project = "SF14072200012")
 CMML15 <- RenameCells(object=CMML15, add.cell.id="SF14072200012")
-saveRDS(CMML15,paste(savedir,"CMML15_SF-140722-00012",date,".rds",sep=""))
+saveRDS(CMML15,paste(savedir,"CMML15.rds",sep=""))
 
 CMML16.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML16_SF13061200056/outs/filtered_feature_bc_matrix/")
 CMML16 <- CreateSeuratObject(counts = CMML16.data, project = "SF13061200056")
 CMML16 <- RenameCells(object=CMML16, add.cell.id="SF13061200056") 
-saveRDS(CMML16,paste(savedir,"CMML16_SF-130612-00056",date,".rds",sep=""))
+saveRDS(CMML16,paste(savedir,"CMML16.rds",sep=""))
 
 CMML17.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML17_4S001/outs/filtered_feature_bc_matrix/")
 CMML17 <- CreateSeuratObject(counts = CMML17.data, project = "4S001")
 CMML17 <- RenameCells(object=CMML17, add.cell.id="4S001")
-saveRDS(CMML17,paste(savedir,"CMML17_4-S-001_HMA",date,".rds",sep=""))
+saveRDS(CMML17,paste(savedir,"CMML17.rds",sep=""))
 
 CMML18.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML18_2V001/outs/filtered_feature_bc_matrix/")
 CMML18 <- CreateSeuratObject(counts = CMML18.data, project = "2V001")
@@ -128,22 +128,22 @@ saveRDS(CMML18,paste(savedir,"CMML18_2-V-001",date,".rds",sep=""))
 CMML19.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML19_SF14101000049/outs/filtered_feature_bc_matrix/")
 CMML19 <- CreateSeuratObject(counts = CMML19.data, project = "SF14101000049")
 CMML19 <- RenameCells(object=CMML19, add.cell.id="SF14101000049")
-saveRDS(CMML19,paste(savedir,"CMML19_SF-141010-00049",date,".rds",sep=""))
+saveRDS(CMML19,paste(savedir,"CMML19.rds",sep=""))
 
 CMML20.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML20_SF16112900158/outs/filtered_feature_bc_matrix/")
 CMML20 <- CreateSeuratObject(counts = CMML20.data, project = "SF16112900158")
 CMML20 <- RenameCells(object=CMML20, add.cell.id="SF16112900158")
-saveRDS(CMML20,paste(savedir,"CMML20_SF-161129-00158",date,".rds",sep=""))
+saveRDS(CMML20,paste(savedir,"CMML20.rds",sep=""))
 
 CMML21.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML21_6AE001/outs/filtered_feature_bc_matrix/")
 CMML21 <- CreateSeuratObject(counts = CMML21.data, project = "6AE001")
 CMML21 <- RenameCells(object=CMML21, add.cell.id="6AE001")
-saveRDS(CMML21,paste(savedir,"CMML21_6-AE-001",date,".rds",sep=""))
+saveRDS(CMML21,paste(savedir,"CMML21.rds",sep=""))
 
 CMML22.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML22_6AC001/outs/filtered_feature_bc_matrix/")
 CMML22 <- CreateSeuratObject(counts = CMML22.data, project = "6AC001")
 CMML22 <- RenameCells(object=CMML22, add.cell.id="6AC001")
-saveRDS(CMML22,paste(savedir,"CMML22_6-AC-001",date,".rds",sep=""))
+saveRDS(CMML22,paste(savedir,"CMML22.rds",sep=""))
 
 CMML23.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML23_6AD001/outs/filtered_feature_bc_matrix/")
 CMML23 <- CreateSeuratObject(counts = CMML23.data, project = "6AD001")
@@ -152,12 +152,12 @@ CMML23 <- RenameCells(object=CMML23, add.cell.id="6AD001")
 CMML24.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML24_SF100109101914/outs/filtered_feature_bc_matrix/")
 CMML24 <- CreateSeuratObject(counts = CMML24.data, project = "SF100109101914")
 CMML24 <- RenameCells(object=CMML24, add.cell.id="SF100109101914")
-saveRDS(CMML24,paste(savedir,"CMML24_SF-100109-101914",date,".rds",sep=""))
+saveRDS(CMML24,paste(savedir,"CMML24.rds",sep=""))
 
 CMML25.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML25_SF12042500035/outs/filtered_feature_bc_matrix/")
 CMML25 <- CreateSeuratObject(counts=CMML25.data, project="SF12042500035")
 CMML25 <- RenameCells(object=CMML25, add.cell.id="SF12042500035")
-saveRDS(CMML25,paste(savedir,"CMML25_SF-120425-00035",date,".rds",sep=""))
+saveRDS(CMML25,paste(savedir,"CMML25.rds",sep=""))
 
 ## note: this patient SF-120919-00043 is actually the same patient at the same exact time point as 6-AD-001
 CMML26.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML26_SF12091900043/outs/filtered_feature_bc_matrix/")
@@ -165,83 +165,79 @@ CMML26 <- CreateSeuratObject(counts=CMML26.data, project="SF12091900043")
 CMML26 <- RenameCells(object=CMML26, add.cell.id="6AD001")
 
 CMMLpt_6AD001 <- merge(x=CMML23, y=CMML26, merge.data=TRUE, project = "6AD001Merged")
-saveRDS(CMMLpt_6AD001,paste(savedir,"CMML23+26_6-AD-001",date,".rds",sep=""))
+saveRDS(CMMLpt_6AD001,paste(savedir,"CMML23+26.rds",sep=""))
 
 CMML27.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML27_SF12092600014/outs/filtered_feature_bc_matrix/")
 CMML27 <- CreateSeuratObject(counts=CMML27.data, project="SF12092600014")
 CMML27 <- RenameCells(object=CMML27, add.cell.id="SF12092600014")
-saveRDS(CMML27,paste(savedir,"CMML27_SF-120926-00014",date,".rds",sep=""))
+saveRDS(CMML27,paste(savedir,"CMML27.rds",sep=""))
 
 CMML28.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML28_SF14031800065/outs/filtered_feature_bc_matrix/")
 CMML28 <- CreateSeuratObject(counts=CMML28.data, project="SF14031800065")
 CMML28 <- RenameCells(object=CMML28, add.cell.id="SF14031800065")
-saveRDS(CMML28,paste(savedir,"CMML28_SF-140318-00065",date,".rds",sep=""))
+saveRDS(CMML28,paste(savedir,"CMML28.rds",sep=""))
 
 CMML29.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML29_SF14050700419/outs/filtered_feature_bc_matrix/")
 CMML29 <- CreateSeuratObject(counts=CMML29.data, project="SF14050700419")
 CMML29 <- RenameCells(object=CMML29, add.cell.id="SF14050700419")
-saveRDS(CMML29,paste(savedir,"CMML29_SF-140507-00419",date,".rds",sep=""))
+saveRDS(CMML29,paste(savedir,"CMML29.rds",sep=""))
 
 CMML30.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML30_SF16026800045/outs/filtered_feature_bc_matrix/")
 CMML30 <- CreateSeuratObject(counts=CMML30.data, project="SF16026800045")
 CMML30 <- RenameCells(object=CMML30, add.cell.id="SF16026800045")
-saveRDS(CMML30,paste(savedir,"CMML30_SF-160268-00045",date,".rds",sep=""))
+saveRDS(CMML30,paste(savedir,"CMML30.rds",sep=""))
 
 CMML31.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML31_SF16072200003/outs/filtered_feature_bc_matrix/")
 CMML31 <- CreateSeuratObject(counts=CMML31.data, project="SF16072200003")
 CMML31 <- RenameCells(object=CMML31, add.cell.id="SF16072200003")
-saveRDS(CMML31,paste(savedir,"CMML31_SF-160722-00003",date,".rds",sep=""))
+saveRDS(CMML31,paste(savedir,"CMML31.rds",sep=""))
 
 CMML32.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML32_SF16112300029/outs/filtered_feature_bc_matrix/")
 CMML32 <- CreateSeuratObject(counts=CMML32.data, project="SF16112300029")
 CMML32 <- RenameCells(object=CMML32, add.cell.id="SF16112300029")
-saveRDS(CMML32,paste(savedir,"CMML32_SF-161123-00029",date,".rds",sep=""))
+saveRDS(CMML32,paste(savedir,"CMML32.rds",sep=""))
 
 #### TREATED SAMPLES
 
 CMML33.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML33_SF13032800016/outs/filtered_feature_bc_matrix/")
 CMML33 <- CreateSeuratObject(counts=CMML33.data, project="SF13032800016")
 CMML33 <- RenameCells(object=CMML33, add.cell.id="SF13032800016")
-saveRDS(CMML33,paste(savedir,"CMML33_SF-130328-00016",date,".rds",sep=""))
+saveRDS(CMML33,paste(savedir,"CMML33.rds",sep=""))
 
 CMML34.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML34_SF14110400108/outs/filtered_feature_bc_matrix/")
 CMML34 <- CreateSeuratObject(counts=CMML34.data, project="SF14110400108")
 CMML34 <- RenameCells(object=CMML34, add.cell.id="SF14110400108")
-saveRDS(CMML34,paste(savedir,"CMML34_SF-141104-00108",date,".rds",sep=""))
+saveRDS(CMML34,paste(savedir,"CMML34.rds",sep=""))
 
 CMML35.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML35_SF14111400033/outs/filtered_feature_bc_matrix/")
 CMML35 <- CreateSeuratObject(counts=CMML35.data, project="SF14111400033")
 CMML35 <- RenameCells(object=CMML35, add.cell.id="SF14111400033")
-saveRDS(CMML35,paste(savedir,"CMML35_SF-141114-00033",date,".rds",sep=""))
+saveRDS(CMML35,paste(savedir,"CMML35.rds",sep=""))
 
 CMML36.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML36_SF14092500135/outs/filtered_feature_bc_matrix/")
 CMML36 <- CreateSeuratObject(counts=CMML36.data, project="SF14092500135")
 CMML36 <- RenameCells(object=CMML36, add.cell.id="SF14092500135")
-saveRDS(CMML36,paste(savedir,"CMML36_SF-140925-00135",date,".rds",sep=""))
+saveRDS(CMML36,paste(savedir,"CMML36.rds",sep=""))
 
 CMML37.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML37_SF14061300036/outs/filtered_feature_bc_matrix/")
 CMML37 <- CreateSeuratObject(counts=CMML37.data, project="SF14061300036")
 CMML37 <- RenameCells(object=CMML37, add.cell.id="SF14061300036")
-saveRDS(CMML37,paste(savedir,"CMML37_SF-140613-00036",date,".rds",sep=""))
+saveRDS(CMML37,paste(savedir,"CMML37.rds",sep=""))
 
 CMML38.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML38_SF14080400065/outs/filtered_feature_bc_matrix/")
 CMML38 <- CreateSeuratObject(counts=CMML38.data, project="SF14080400065")
 CMML38 <- RenameCells(object=CMML38, add.cell.id="SF14080400065")
-saveRDS(CMML38,paste(savedir,"CMML38_SF-140804-00065",date,".rds",sep=""))
+saveRDS(CMML38,paste(savedir,"CMML38.rds",sep=""))
 
 CMML39.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML39_SF15010200008/outs/filtered_feature_bc_matrix/")
 CMML39 <- CreateSeuratObject(counts=CMML39.data, project="SF15010200008")
 CMML39 <- RenameCells(object=CMML39, add.cell.id="SF15010200008")
-saveRDS(CMML39,paste(savedir,"CMML39_SF-150102-00008",date,".rds",sep=""))
+saveRDS(CMML39,paste(savedir,"CMML39.rds",sep=""))
 
 CMML40.data <- Read10X(data.dir = "/share/lab_padron/Meghan/scRNAseq/CMML/CMML40_SF13070900171/outs/filtered_feature_bc_matrix/")
 CMML40 <- CreateSeuratObject(counts=CMML40.data, project="SF13070900171")
 CMML40 <- RenameCells(object=CMML40, add.cell.id="SF13070900171")
-saveRDS(CMML40,paste(savedir,"CMML40_SF-130709-00171",date,".rds",sep=""))
-
-#<--------
-
-## merged without cutoffs applied
+saveRDS(CMML40,paste(savedir,"CMML40.rds",sep=""))
 
 savedir <- "/share/lab_altrock/MeghanCluster/BrianCluster/"
 
