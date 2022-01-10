@@ -15,7 +15,7 @@ allSeurat <- SetIdent(object=allSeurat, value = allSeurat$RNA_snn_res.0.05)
 levels(allSeurat)
 
 # differential gene expression
-options(future.globals.maxSize = 16000 * 1024^5)
+options(future.globals.maxSize = 32000*1024*1024)
 mrks <- FindMarkers(allSeurat, ident.1=2, ident.2=0)
 write.csv(mrks, './src/04_revision-analysis/clus2-vs-clus0.de.markers.csv')
 ### ran out of memory on laptop, moved to HiPerGator
