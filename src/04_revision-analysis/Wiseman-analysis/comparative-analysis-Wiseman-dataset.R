@@ -252,5 +252,10 @@ pdf(paste0(dir, "Wiseman_UMAP_withoutHarmony",date,".pdf"))
 DimPlot(Wiseman, reduction = "umap", group.by = "orig.ident")
 dev.off()
 
+## FEATURE PLOT - CD120b
+feature_vec <- c("TNFRSF1B")
+pdf(paste0(dir, "Wiseman_UMAP_CD120b",date,".pdf"))
+FeaturePlot(Wiseman, features = feature_vec)
+dev.off()
 #<--------------------- here 
 
