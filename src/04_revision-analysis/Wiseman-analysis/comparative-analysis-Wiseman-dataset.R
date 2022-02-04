@@ -244,6 +244,13 @@ dev.off()
 
 saveRDS(Wiseman, paste0(dir, "Wiseman_postQC_CMML7+healthy3_thruPCA",date,".rds",sep=""))
 
+## Skipping Harmony integration & clustering here, focused on validating the results from Ferrall-Fairbanks et al
+
+# Run, plot, and save UMAP projections (based on PCA)
+Wiseman <- RunUMAP(Wiseman, dims = 1:50)
+pdf(paste0(dir, "Wiseman_UMAP_withoutHarmony",date,".pdf"))
+DimPlot(Wiseman, reduction = "umap", group.by = "orig.ident")
+dev.off()
 
 #<--------------------- here 
 
