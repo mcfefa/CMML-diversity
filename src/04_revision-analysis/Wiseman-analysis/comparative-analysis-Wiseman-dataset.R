@@ -211,5 +211,39 @@ saveRDS(WisemanCMML.qc, paste0(dir, "Wiseman_CMML_postQC",date,".rds",sep=""))
 Wiseman <- merge(WisemanNormal.qc, WisemanCMML.qc)
 saveRDS(Wiseman, paste0(dir, "Wiseman_postQC_CMML7+healthy3",date,".rds",sep=""))
 
+##### Post-QC Processing #####################################
+# Log normalize 
+Wiseman <- NormalizeData(Wiseman, normalization.method = "LogNormalize", scale.factor = 10000)
+
+# Find variable features 
+Wiseman <- FindVariableFeatures(Wiseman, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes and plot
+top10 <- head(VariableFeatures(Wiseman), 10)
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(Wiseman)
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
+pdf(paste(dir, "Wiseman_HVG_labeled-top-10", date,".pdf",sep=""))
+vPlot <- plot1 + plot2
+print(vPlot)
+dev.off()
+
+# Scale data (only use HVG), regressing out effects of nCountRNA and percent.mito
+Wiseman <- ScaleData(Wiseman, features = VariableFeatures(Wiseman), vars.to.regress = c("nCount_RNA","percent.mito"))
+
+# Run, plot and save PCA
+Wiseman <- RunPCA(Wiseman, features = VariableFeatures(object = Wiseman))
+pdf(paste0(dir, "Wiseman_PCA_allSeurat_standard_seurat_pipeline_preHarmony", date, ".pdf",sep=""))
+DimPlot(Wiseman, reduction = "pca", split.by = "tech", pt.size = 0.0001)
+dev.off()
+
+# Determine dimensionality of dataset
+pdf(paste0(dir, "Wiseman_PCA_Elbow-Plot_allSeurat_standard_seurat_pipeline_preHarmony", date, ".pdf",sep=""))
+ElbowPlot(Wiseman, ndims = 50)
+dev.off()
+
+saveRDS(Wiseman, paste0(dir, "Wiseman_postQC_CMML7+healthy3_thruPCA",date,".rds",sep=""))
+
 
 #<--------------------- here 
+
