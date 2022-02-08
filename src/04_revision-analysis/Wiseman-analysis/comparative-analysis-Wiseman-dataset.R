@@ -254,8 +254,17 @@ dev.off()
 
 ## FEATURE PLOT - CD120b
 feature_vec <- c("TNFRSF1B")
-pdf(paste0(dir, "Wiseman_UMAP_CD120b",date,".pdf"))
+pdf(paste0(dir, "Wiseman_UMAP_CD120b",date,".pdf",sep=""))
 FeaturePlot(Wiseman, features = feature_vec)
 dev.off()
+
+## check FcgR expression per Reviewer comment
+options(future.globals.maxSize = 128000*1024*1024)
+feature_vec <- c("FCGR2A")
+pdf(paste0(dir,"Wiseman_UMAP_FcgR",date,".pdf",sep=""))
+FeaturePlot(Wiseman, features = feature_vec)
+dev.off()
+
+
 #<--------------------- here 
 
