@@ -9,6 +9,13 @@ dir <- '~/GitHub/CMML-diversity/src/04_revision-analysis/'
 # read in GSEA Geneset
 wntsig <- read.delim(paste0(dir,"GSEA_KEGG-WNT-SIGNALING-Geneset.txt",sep=""),header=TRUE,sep="\t",dec=",",skip=1)
 
+
+## using score feature in Seurat
+allSeurat <- AddModuleScore(object=allSeurat, features=wntsig, name="WNT_score")
+## note: Warning: The following features are not present in the object: SKP1P2, not searching for symbol synonyms
+
+
+
 for (j in 1:length(orig.ident.vec)){
   
   cmml <- subset(allSeurat, orig.ident == orig.ident.vec[j], features = allGenes)
