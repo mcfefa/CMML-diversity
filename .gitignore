@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.rds
+*.h5
+.RDataTmp
+.RDataTmp1
