@@ -406,3 +406,30 @@ final_mutation_info_4I<-data.frame(out_4I,
                                      (nrow(final_NGT_4I)*2)*100) 
 
 print(head(final_mutation_info_4I))
+
+###############################
+### Tapestri Package - Extracting Data 
+###############################
+options(stringsAsFactors = FALSE)
+library(purrr)
+
+#<--------- left off here, getting necessary files
+
+sample_set <- list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/",full.names = TRUE)
+names(sample_set) <-list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/")
+
+for(i in names(sample_set)){
+  barcode_files<-grep("barcode",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+  loom_files<-grep("loom$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+  header_files<-grep("vcf_header.txt$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+  barcodes <- read_barcodes(barcode_files,header_files)
+  loom <- connect_to_loom(loom_files)
+  ngt_file <- extract_genotypes(loom, barcodes, 
+                                gt.filter=TRUE, gt.gqc = 30,
+                                gt.dpc = 10, gt.afc = 25,  gt.mv = 50, 
+                                gt.mc = 50, gt.mm = 1, gt.mask = TRUE)
+  snv <- convert_to_analyte(data=as.data.frame(ngt_file),
+                            type='snv',
+                            name=i)
+  saveRDS(snv,paste0("./src/04_revision-analysis/scDNAseq/analysis/",i,".rds"))
+}
