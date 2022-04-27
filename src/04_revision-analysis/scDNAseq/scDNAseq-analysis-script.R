@@ -412,24 +412,104 @@ print(head(final_mutation_info_4I))
 ###############################
 options(stringsAsFactors = FALSE)
 library(purrr)
+library(loomR)
 
 #<--------- left off here, getting necessary files
 
-sample_set <- list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/",full.names = TRUE)
-names(sample_set) <-list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/")
+# sample_set <- list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/",full.names = TRUE)
+# names(sample_set) <-list.files("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files/")
+# 
+# for(i in names(sample_set)){
+#   barcode_files<-grep("barcode",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+#   loom_files<-grep("loom$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+#   header_files<-grep("vcf_header.txt$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+#   barcodes <- read_barcodes(barcode_files,header_files)
+#   loom <- connect_to_loom(loom_files)
+#   ngt_file <- extract_genotypes(loom, barcodes, 
+#                                 gt.filter=TRUE, gt.gqc = 30,
+#                                 gt.dpc = 10, gt.afc = 25,  gt.mv = 50, 
+#                                 gt.mc = 50, gt.mm = 1, gt.mask = TRUE)
+#   snv <- convert_to_analyte(data=as.data.frame(ngt_file),
+#                             type='snv',
+#                             name=i)
+#   saveRDS(snv,paste0("./src/04_revision-analysis/scDNAseq/analysis/",i,".rds"))
+# }
+# 
+# ## broke up loop and utilized other pieces already loaded
+# barcode_files<-grep("barcode",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+# loom_files<-grep("loom$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+# header_files<-grep("vcf_header.txt$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
+# 
+# 
+# barcodes <- cell_barcodes_5M
+# loom_5M <- connect("/Users/ferrallm/Dropbox (UFL)/papers-in-progress/CMML-scRNAseq-Paper/analysis/scDNAseq/Tapestri_Output_Files//5-M-001.cells.loom")
+# ngt_file_5M <- extract_genotypes(loom_5M, barcodes, 
+#                               gt.filter=TRUE, gt.gqc = 30,
+#                               gt.dpc = 10, gt.afc = 25,  gt.mv = 50, 
+#                               gt.mc = 50, gt.mm = 1, gt.mask = TRUE)
+# snv_5M <- convert_to_analyte(data=as.data.frame(ngt_file_5M),
+#                           type='snv',
+#                           name=i)
+# saveRDS(snv_5M,paste0("./src/04_revision-analysis/scDNAseq/analysis/5-M-001_snv.rds"))
+# 
+# ### not sure I need to do this step, think it is okay just to use from previous processing 
+# ###   just going to jump forward in the analysis pipeline
 
-for(i in names(sample_set)){
-  barcode_files<-grep("barcode",list.files(sample_set[i],full.names=TRUE),value=TRUE)
-  loom_files<-grep("loom$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
-  header_files<-grep("vcf_header.txt$",list.files(sample_set[i],full.names=TRUE),value=TRUE)
-  barcodes <- read_barcodes(barcode_files,header_files)
-  loom <- connect_to_loom(loom_files)
-  ngt_file <- extract_genotypes(loom, barcodes, 
-                                gt.filter=TRUE, gt.gqc = 30,
-                                gt.dpc = 10, gt.afc = 25,  gt.mv = 50, 
-                                gt.mc = 50, gt.mm = 1, gt.mask = TRUE)
-  snv <- convert_to_analyte(data=as.data.frame(ngt_file),
-                            type='snv',
-                            name=i)
-  saveRDS(snv,paste0("./src/04_revision-analysis/scDNAseq/analysis/",i,".rds"))
+###############################
+### Assessing clonal abundance
+###############################
+
+# Select samples with at least 2 mutations 
+clonal_sample_set_5M <- do.call(rbind,lapply(final_mutation_info_5M,dim))[,2]>2
+clonal_sample_set_4I <- names(final_mutation_info_4I)[do.call(rbind,lapply(final_mutation_info_4I,dim))[,2]>2]
+
+# Order columns based on computed_VAF, and assign a clone to each cell
+NGT_to_clone_5M <-lapply(final_NGT_5M[clonal_sample_set_5M],function(y){
+  bulk_VAF_order_5M <-names(sort(colSums(y[,-1]),decreasing=TRUE))
+  y[,c("Cell",bulk_VAF_order_5M)] %>%unite("Clone",all_of(`bulk_VAF_order_5M`),sep="_", remove = FALSE)
+})
+
+NGT_to_clone_4I <-lapply(final_NGT_4I[clonal_sample_set_4I],function(y){
+  bulk_VAF_order_4I <-names(sort(colSums(y[,-1]),decreasing=TRUE))
+  y[,c("Cell",bulk_VAF_order_4I)] %>%unite("Clone",all_of(`bulk_VAF_order_4I`),sep="_", remove = FALSE)
+})
+
+
+# Tally clones
+clonal_abundance<- lapply(NGT_to_clone,function(x){
+  x%>%count(Clone,name="Count")%>%arrange(Count)
+})
+
+# Setup a resampling function to generate multiple clonal abundance tallies
+resample_fun<-function(data){
+  x <- data[sample(x=1:nrow(data),replace=TRUE),]
+  return(as.matrix(x%>%count(Clone,name="Count")%>%arrange(Count)))
 }
+
+replicates <- 100 # we did 10,000. Keeping it low here for run time.
+clone_cutoff <- 10 # minimum number of cells in order to retain a clone
+clonal_abundance_boot_CI <- lapply(names(NGT_to_clone),function(sample_to_test){
+  test<-replicate(n=replicates,resample_fun(NGT_to_clone[[sample_to_test]]),simplify = "array")
+  if(class(test)=="list"){
+    y <- setNames(lapply(test,data.frame),1:replicates) %>%
+      imap(.x = ., ~ set_names(.x, c("Clone", .y))) %>% 
+      purrr::reduce(full_join, by = "Clone")%>%
+      mutate_if(names(.)!="Clone",as.numeric)%>%
+      mutate_each(funs(replace(., is.na(.), 0)))
+  }
+  if(class(test)=="array"){
+    y <- setNames(apply(test,3,data.frame),1:replicates) %>%
+      imap(.x = ., ~ set_names(.x, c("Clone", .y))) %>% 
+      purrr::reduce(full_join, by = "Clone")%>%
+      mutate_if(names(.)!="Clone",as.numeric)%>%
+      mutate_each(funs(replace(., is.na(.), 0)))
+  }
+  z <- data.frame(t(apply(y%>%select(-Clone),1,function(p){
+    quantile(p,probs=c(0.025,0.975))
+  })),"Clone"=y$Clone)
+  set <- setNames(data.frame(inner_join(data.frame(clonal_abundance[[sample_to_test]]),z,by="Clone")),
+                  c("Clone","Count","LCI","UCI"))%>%filter(LCI>=clone_cutoff)
+})
+names(clonal_abundance_boot_CI) <-names(clonal_abundance)
+
+
