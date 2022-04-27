@@ -7,7 +7,7 @@ allSeurat <- readRDS(paste0(datadir, 'allSeurat_39+8_postStandardPipeline_withHa
 dir <- '~/GitHub/CMML-diversity/src/04_revision-analysis/'
 
 # read in GSEA Geneset
-wntsig <- read.delim(paste0(dir,"GSEA_KEGG-WNT-SIGNALING-Geneset.txt",sep=""),header=TRUE,sep="\t",dec=",",skip=1)
+wntsig <- read.delim(paste0(dir,"GSEA_KEGG-WNT-SIGNALING-Geneset_CD34.txt",sep=""),sep="\t",dec=",",skip=1)
 
 
 ## using score feature in Seurat
