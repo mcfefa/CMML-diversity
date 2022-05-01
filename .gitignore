@@ -6,3 +6,7 @@
 *.h5
 .RDataTmp
 .RDataTmp1
+src/04_revision-analysis/scDNAseq/5-M-001_exported_P-umpa_P-clus_AF-shortlist_P-exp-means_2022-05-01.csv
+src/04_revision-analysis/scDNAseq/4-I-001_exported_P-umpa_P-clus_AF-shortlist_P-exp-all_2022-05-01.csv
+src/04_revision-analysis/scDNAseq/4-I-001_exported_P-umpa_P-clus_AF-shortlist_P-exp-means_2022-05-01.csv
+src/04_revision-analysis/scDNAseq/5-M-001_exported_P-umpa_P-clus_AF-shortlist_P-exp-all_2022-05-01.csv
