@@ -11,4 +11,8 @@ This analysis contains two distinct parts.
 
 The code for this analysis is described in `HSC_depletion_scRes_eppert_wu_vg`.
 
+(3) `WNT_signature` details the signature scoring and plots shown in Supp. Figure S10.  Signature derives from:
+"Herault A, Binnewies M, Leong S, Calero-Nieto FJ, Zhang SY, Kang YA, et al. Myeloid progenitor cluster formation drives emergency and leukaemic myelopoiesis. Nature 2017;544(7648):53-8 doi 10.1038/nature21693."
+
+
 
