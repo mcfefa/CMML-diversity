@@ -1,3 +1,3 @@
 "project_pseudotime_slingshot.R" projects our samples to reference maps in "Triana et al., Single-cell proteo-genomic reference maps of the hematopoietic system enable the purification and massive profiling of precisely defined cell states. Nature Immunology (2021). https://doi.org/10.1038/s41590-021-01059-0"
 
-We use Seurat's Integration and Mapping (tutorial: https://satijalab.org/seurat/articles/integration_mapping.html) to project their pseudotime to ours. Data from Triana et al. downloaded from https://figshare.com/projects/Single-cell_proteo-genomic_reference_maps_of_the_human_hematopoietic_system/94469
+We use Seurat's Integration and Mapping (tutorial: https://satijalab.org/seurat/articles/integration_mapping.html) to project their pseudotime to ours. "Healthy.rds" from Triana et al. downloaded from https://figshare.com/projects/Single-cell_proteo-genomic_reference_maps_of_the_human_hematopoietic_system/94469
