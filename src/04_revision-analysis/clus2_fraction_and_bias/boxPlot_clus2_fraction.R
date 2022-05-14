@@ -4,8 +4,6 @@ rm(list = ls())
 
 allSeurat <- readRDS("~/scCode/allSeurat_withsingleR_withBias_03092022.rds")
 
-VlnPlot(allSeurat, features = allSeurat$clusterResolution_0.05, group.by = "bias")
-
 split_cluster_by_ind <- split(allSeurat$clusterResolution_0.05, paste0(allSeurat$bias, allSeurat$orig.ident))
 
 clusFraction <- lapply(split_cluster_by_ind, function(x) {sum(x == "2")/sum(x != "-1")})
