@@ -1,0 +1,1 @@
+Projection of our samples to reference maps in Triana et al., Single-cell proteo-genomic reference maps of the hematopoietic system enable the purification and massive profiling of precisely defined cell states. Nature Immunology (2021). https://doi.org/10.1038/s41590-021-01059-0
