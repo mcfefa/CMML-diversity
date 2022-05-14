@@ -13,7 +13,7 @@ dir <- '/Users/Brian/scCode/mitoclone/'
 saveDir <- paste0(dir, 'evoFreq_04042022_newParams/')
 importDir <- paste0(dir, 'sequential_clus_clone_03272022_newParams/')
 
-#######   CHANGE PATIENT #############
+#######   SET PATIENT #############
 currentSample <- "patientC"
 C <- read.csv(paste0(importDir, currentSample, '_cluster_and_clone_info.csv'))
 
@@ -23,7 +23,7 @@ C.table <- table(C$Sample, C$Clone)
 C.mat <- matrix(C.table, ncol = ncol(C.table), dimnames = dimnames(C.table))
 C.wide <- as.data.frame(t(100*C.mat/rowSums(C.mat)))
 
-#######  CHANGE: SET INITIAL COMPOSITION (SET INITIAL TO 0 IF IT STEMS FROM ANOTHER CLONE) ##########
+#######  SET INITIAL COMPOSITION (set initial to 0 if a clone stems from another clone) ##########
 C.wide <- cbind(c(.01,rep(0, dim(C.wide)[1]-1)), C.wide)
 
 colnames(C.wide) <- c("", "Sample 1", "Sample 2")
@@ -39,10 +39,11 @@ C.wide$parents <- c(0, rep(1, dim(C.wide)[1] - 1))
 freq_frame <- get_evofreq(C.wide[,seq(1,dim(C.wide)[2]-2)], C.wide$clones, 
                           C.wide$parents, clone_cmap = "YIGnBu")
 
+# Run function to set custom color scheme
 source("~/scCode/evoFreq_fixColor.R")
 freq_frame <- evoFreq_fixColor_clone(freq_frame)
 
-# Create the plot (shown on the left below)
+# Create the plot
 evo_freq_p <- plot_evofreq(freq_frame) + ylab("Relative Pop. Size") + ggtitle("Clonal Dynamics") + xlab(NULL) + 
   theme_bw() + theme(axis.text.x = element_text(face = "bold", family = "Arial", size = 12), 
         axis.title.y = element_text(face = "bold", family = "Arial", size = 12),
@@ -57,12 +58,12 @@ C.table <- table(C$Sample, C$Clus)
 C.mat <- matrix(C.table, ncol = ncol(C.table), dimnames = dimnames(C.table))
 C.wide <- as.data.frame(t(100*C.mat/rowSums(C.mat)))
 
-####### CHANGE: THIS WILL DEPEND ON CLUSTREE (IF SPAWNING FROM OTHER CLUSTER, SET TO 0) ########
+####### Set initial frequency ########
 C.wide <- cbind(c(.01, .01 , 0.01, .01, .01, 0, 0.01), C.wide)
 
 colnames(C.wide) <- c("", "Sample 1", "Sample 2")
 
-####### CHANGE: THIS WILL DEPEND ON THE CLUSTREE #########
+####### Set parents (here all arise separately) #########
 C.wide$parents <- c(0, 0, 0, 0, 0, 2, 0)
 C.wide$clones <- colnames(C.mat)
 
@@ -71,9 +72,10 @@ C.wide$clones <- colnames(C.mat)
 freq_frame <- get_evofreq(C.wide[,seq(1,dim(C.wide)[2]-2)], C.wide$clones, 
                           C.wide$parents, clone_cmap = "jet")
 
+# Set color scheme
 freq_frame <- evoFreq_fixColor_clus(freq_frame)
 
-# Create the plot (shown on the left below)
+# Create the plot
 clus_freq_p <- plot_evofreq(freq_frame) + ylab("Relative Pop. Size") + ggtitle("Cluster Dynamics") + xlab(NULL) +
   theme_bw() + theme(axis.text.x = element_text(face = "bold", family = "Arial", size = 12), 
                      axis.title.y = element_text(face = "bold", family = "Arial", size = 12),
