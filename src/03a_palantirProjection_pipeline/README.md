@@ -4,3 +4,5 @@ We leverage the Differentiation Trajectory Analysis on CD34+ cells enriched from
 
 `01_map_to_rep1_use123.R` is the code for mapping each individual patients onto the normal/reference (Rep1) from Setty et al.
 `02_densityPlot_11012021.R` is the code for visualizing the over-densities and under-densities along the differentiation trajectories.
+
+`map_normals_to_palantir` takes a similar approach, using Seurat's integration to map our normals to the same established trajectory. Results shown in Supp. Fig. S16
