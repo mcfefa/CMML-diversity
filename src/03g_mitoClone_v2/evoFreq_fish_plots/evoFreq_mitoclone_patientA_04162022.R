@@ -13,7 +13,7 @@ dir <- '/Users/Brian/scCode/mitoclone/'
 saveDir <- paste0(dir, 'evoFreq_04042022_newParams/')
 importDir <- paste0(dir, 'sequential_clus_clone_03272022_newParams/')
 
-#######   CHANGE PATIENT #############
+#######   SET PATIENT #############
 currentSample <- "patientA"
 patient <- read.csv(paste0(importDir, currentSample, '_cluster_and_clone_info.csv'))
 
@@ -23,7 +23,7 @@ patient.table <- table(patient$Sample, patient$Clone)
 patient.mat <- matrix(patient.table, ncol = ncol(patient.table), dimnames = dimnames(patient.table))
 patient.wide <- as.data.frame(t(100*patient.mat/rowSums(patient.mat)))
 
-#######  CHANGE: SET INITIAL COMPOSITION (SET INITIAL TO 0 IF IT STEMS FROM ANOTHER CLONE) ##########
+#######  SET INITIAL COMPOSITION (set initial to 0 if a clone stems from another clone) ##########
 patient.wide <- cbind(c(.01, rep(0, dim(patient.wide)[1]-1)), patient.wide)
 
 colnames(patient.wide) <- c("", "Sample 1", "Sample 2", "Sample3")
@@ -39,10 +39,12 @@ patient.wide$parents <- c(0, rep(1, dim(patient.wide)[1] - 1))
 freq_frame <- get_evofreq(patient.wide[,seq(1,dim(patient.wide)[2]-2)], patient.wide$clones, 
                           patient.wide$parents, clone_cmap = "YIGnBu")
 
+# Run function to set custom color scheme
 source("~/scCode/evoFreq_fixColor.R")
 freq_frame <- evoFreq_fixColor_clone(freq_frame)
 
-unique(evo_freq_p[["data"]][["plot_color"]])
+# Check colors
+#unique(evo_freq_p[["data"]][["plot_color"]])
 
 # Create the plot (shown on the left below)
 evo_freq_p <- plot_evofreq(freq_frame) + ylab("Relative Pop. Size") + ggtitle("Clonal Dynamics") + xlab(NULL) + 
@@ -59,12 +61,12 @@ patient.table <- table(patient$Sample, patient$Clus)
 patient.mat <- matrix(patient.table, ncol = ncol(patient.table), dimnames = dimnames(patient.table))
 patient.wide <- as.data.frame(t(100*patient.mat/rowSums(patient.mat)))
 
-####### CHANGE: THIS WILL DEPEND ON CLUSTREE (IF SPAWNING FROM OTHER CLUSTER, SET TO 0) ########
+####### Set initial frequency ########
 patient.wide <- cbind(rep(.01, dim(patient.wide)[1]), patient.wide)
 
 colnames(patient.wide) <- c("", "Sample 1", "Sample 2", "Sample 3")
 
-####### CHANGE: THIS WILL DEPEND ON THE CLUSTREE #########
+####### Set parents (here all arise separately) #########
 patient.wide$parents <- rep(0, dim(patient.wide)[1])
 patient.wide$clones <- colnames(patient.mat)
 
@@ -73,6 +75,7 @@ patient.wide$clones <- colnames(patient.mat)
 freq_frame <- get_evofreq(patient.wide[,seq(1,dim(patient.wide)[2]-2)], patient.wide$clones, 
                           patient.wide$parents, clone_cmap = "jet")
 
+# Set color scheme
 freq_frame <- evoFreq_fixColor_clus(freq_frame)
 
 # Create the plot (shown on the left below)
