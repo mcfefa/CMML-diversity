@@ -22,10 +22,10 @@ saveDir <- paste0(dir, 'sequential_params_from_02022022_run_03262022/')
 # Get mutationCallsFromBlacklist as single core fn
 source(paste0(dir, 'mutationCallsFromBlacklist_singleCoreFn.R'))
 
-# Import seurat stuff and organize it (now including cell type from singleR)
+# Import seurat info
 umap_embeddings <- readRDS('~/scCode/mitoclone/umap_embeddings_pre_mito_02022022.rds')
 
-#Run each sample separately (no blacklist)
+#Run each sample separately
 ptm <- proc.time()
 
 # Note which samples are from the same patients
@@ -100,7 +100,6 @@ for (i in 1:length(sequential_list)){
   clone$CB <- barcodesOnlyMito
   clone$Sample <- substr(clone$CB, 1, 7)
   
-  
   #Match seurat and mitoclone barcodes
   combine.df <- data.frame("CB" = NA, "X" = NA, "Y" = NA, "Clone" = NA, "Clus" = NA, "Sample" = NA)
   barcodes <- row.names(umap_embeddings)
@@ -127,13 +126,16 @@ for (i in 1:length(sequential_list)){
   # Remove na's (cells that were filtered by our QC)
   combine_muts <- combine_muts[!is.na(combine_muts$CB),]
   
+  # Plot clone information in palantir embeddings
   pdf(paste0(saveDir, currentPatient, '_palantir_embeddings_mitoclone.pdf'), width = 8, height = 6)
   print(ggplot(combine_muts) + geom_point(aes(x = Palantir_X, y = Palantir_Y, color = as.factor(Clone)), size = .4))
   dev.off()
   
+  # Save 
   mito_object_dir <- '~/scCode/mitoclone/sequential_params_from_02022022_run_03262022/'
   saveRDS(CMML, paste0(mito_object_dir, currentPatient, '_clustered_mitoclone_object_03262022.rds'))
   saveRDS(combine_muts, paste0(mito_object_dir, currentPatient, '_combine_muts_df.rds'))
   rm(CMML)
 }
+                                  
 proc.time() - ptm
