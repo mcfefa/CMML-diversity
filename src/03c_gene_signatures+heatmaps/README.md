@@ -11,7 +11,9 @@ This analysis contains two distinct parts.
 
 The code for this analysis is described in `HSC_depletion_scRes_eppert_wu_vg`.
 
-(3) `WNT_signature` details the signature scoring and plots shown in Supp. Figure S10.  Signature derives from:
+(3) `Wu_GMP_score_clus2_vs_nonClus2` aggregates scores from Wu signature for GMP cells and splits by whether the cells are in cluster 2. It then exports to csv for plotting in Graphpad. Plot is shown in Supp. Fig. S9.
+
+(4) `WNT_signature` details the signature scoring and plots shown in Supp. Figure S10.  Signature derives from:
 "Herault A, Binnewies M, Leong S, Calero-Nieto FJ, Zhang SY, Kang YA, et al. Myeloid progenitor cluster formation drives emergency and leukaemic myelopoiesis. Nature 2017;544(7648):53-8 doi 10.1038/nature21693."
 
 
