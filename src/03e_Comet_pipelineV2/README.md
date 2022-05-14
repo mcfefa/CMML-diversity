@@ -4,4 +4,4 @@ We use [COMET](http://www.cometsc.com/index), a tool previously published by [De
 
 Given our seurat object, we use `01_make_comet_txt_files.R` to make txt files matching the criteria for input to COMET. We distinguish our cells based on whether they appear in cluster 2, and downsample the non-cluster 2 cells to account for 65k cell limit of the COMET package. 
 
-We run COMET in the command line using the simple bash script `02_comet_commandLine.sh`
+We run COMET in the command line using the simple bash script `02_run_comet.sh`
