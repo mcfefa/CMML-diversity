@@ -1,13 +1,9 @@
 library(Seurat)
 library(dplyr)
-library(harmony)
 library(ggplot2)
 library(patchwork)
-library(BiocNeighbors)
 library(tidyverse)
-library(RColorBrewer)
-library(gplots)
-library(raster)
+
 
 rm(list = ls())
 
@@ -15,7 +11,7 @@ rm(list = ls())
 allSeurat <- readRDS('/Users/Brian/Downloads/seuratObj_05-11-2021_postStandardPipeline_withHarmony_allSamples_39+8.rds')
 
 ############## Make txt files for COMET analysis ##############################
-#Specify the genes we need to use (flow receptors we have profiled)
+#Specify the genes we need to use (flow receptors)
 panelA <- c("IL3RA", "KIT", "MPL", "HAVCR2", "CSF2RA", 'CCR2', 'IL2RG', 'IL5RA',
             'IL15RA', 'TLR2', 'FLT3', 'CSF1R', 'CXCR4', 'CSF3R', 'CXCR2',
             'CXCR1', 'IL18R1', 'IFNGR1', 'TLR4', 'TNFRSF1A', 'TNFRSF1B', 'IL6R',
