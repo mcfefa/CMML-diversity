@@ -11,8 +11,6 @@ allSeurat <- readRDS('/Users/Brian/scCode/singleR/seuratObject_allSamples_withsi
 
 # Import the normal 
 reference_healthy <- readRDS('/Users/Brian/scCode/nat_imm_sc_ref_maps/Healthy.rds')
-reference_AML <- readRDS('/Users/Brian/scCode/nat_imm_sc_ref_maps/AMLs_Scano_projected.rds')
-FeaturePlot(reference_AML, features = "CD34-AB")
 
 # Subset to CD34+
 reference_healthy_cd34_plus <- subset(x = reference_healthy, subset = CD34plus == TRUE)
