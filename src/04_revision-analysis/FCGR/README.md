@@ -2,4 +2,4 @@ Expression of Fc gamma receptors shown using Seurat FeaturePlot(). Receptors in 
 
 FCGR3B shows very little expression across all cells and was not included. 
 
-".R" makes plots
+"fcgr_plots.R" makes plots
