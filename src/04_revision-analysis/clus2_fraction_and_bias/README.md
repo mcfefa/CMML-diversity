@@ -1,1 +1,1 @@
-The script ".R" simply makes a boxplot of the cluster 2 fraction for each sample, grouped by the bias assigned to the sample (mono, MEP, Normal-like, Normal)
+The script "boxPlot_clus2_fraction.R" simply makes a boxplot of the cluster 2 fraction for each sample, grouped by the bias assigned to the sample (mono, MEP, Normal-like, Normal). Shown in Supp. Fig. S8
