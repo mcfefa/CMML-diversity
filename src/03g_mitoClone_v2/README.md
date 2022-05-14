@@ -2,6 +2,6 @@
 
 "02_mitoClone_mutationCalls_and_cluster.R" runs the mitoclone functions and saves the output mitoclone objects. Mitoclone functions include filtering sites to identify which sites will be used for clonal assignment and clustering to assign clones. This script will call mutationCallsFromBlacklist_singleCoreFn.R because I needed to manually edit one of the mitoClone functions to run only on a single core (multicore function was not working).
 
-"umap_embeddings_pre_mito_02022022.rds" is a file with all relevant information from seurat object, including palantir embeddings, umap embeddings, cluster assignment, and singleR cell type assignment. We put it into this format for easier downstream plotting/analysis integration with mitoclone.
+"umap_embeddings_pre_mito_02022022.rds" is a file with all relevant information from seurat object, including cell barcodes, palantir embeddings, umap embeddings, cluster assignment, and singleR cell type assignment. We put it into this format for easier downstream plotting/analysis integration with mitoclone.
 
 "mitoclone_in_palantir_plotAll.R" takes all mitoclone objects computed in "02_mitoClone_mutationCalls_and_cluster.R" and plots them with position of palantir embeddings and color of mitoClone assigned clone. This is shown in figure 4A of the paper for three representative examples. Note: this requires "umap_embeddings_pre_mito_02022022.rds"
