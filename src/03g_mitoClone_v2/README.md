@@ -1,3 +1,3 @@
 "01_mitoClone_generateCountTables.R" takes bam and bai files for each single cell as input and constructs count tables, which contain the base counts at each site for each cell. This will be used as input to mitoClone's next steps. We provide count tables as an rds file in CodeOcean, so this step is only necessary if running on a different dataset.
 
-"02_.R" plots
+"02_mitoClone_mutationCalls_and_cluster.R" runs the mitoclone functions and saves the output mitoclone objects. Mitoclone functions include filtering sites to identify which sites will be used for clonal assignment and clustering to assign clones. This script will call mutationCallsFromBlacklist_singleCoreFn.R because I needed to manually edit one of the mitoClone functions to run only on a single core (multicore function was not working). 
