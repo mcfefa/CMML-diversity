@@ -9,4 +9,4 @@
 
 "mitoclone_in_palantir_plotAll.R" takes all mitoclone objects computed in "02a_mitoClone_mutationCalls_and_cluster.R" and plots them with position of palantir embeddings and color of mitoClone assigned clone. This is shown in figure 4A of the paper for three representative examples. Note: this requires "umap_embeddings_pre_mito_02022022.rds"
 
-
+evoFreq_fish_plots directory provides scripts for making the clone and cluster fish plots shown in figures 4 and 5.
