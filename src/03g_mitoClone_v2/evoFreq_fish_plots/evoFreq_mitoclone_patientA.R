@@ -46,7 +46,7 @@ freq_frame <- evoFreq_fixColor_clone(freq_frame)
 # Check colors
 #unique(evo_freq_p[["data"]][["plot_color"]])
 
-# Create the plot (shown on the left below)
+# Create the plot
 evo_freq_p <- plot_evofreq(freq_frame) + ylab("Relative Pop. Size") + ggtitle("Clonal Dynamics") + xlab(NULL) + 
   theme_bw() + theme(axis.text.x = element_text(face = "bold", family = "Arial", size = 12), 
                      axis.title.y = element_text(face = "bold", family = "Arial", size = 12),
@@ -78,7 +78,7 @@ freq_frame <- get_evofreq(patient.wide[,seq(1,dim(patient.wide)[2]-2)], patient.
 # Set color scheme
 freq_frame <- evoFreq_fixColor_clus(freq_frame)
 
-# Create the plot (shown on the left below)
+# Create the plot
 clus_freq_p <- plot_evofreq(freq_frame) + ylab("Relative Pop. Size") + ggtitle("Cluster Dynamics") + xlab(NULL) +
   theme_bw() + theme(axis.text.x = element_text(face = "bold", family = "Arial", size = 12), 
                      axis.title.y = element_text(face = "bold", family = "Arial", size = 12),
