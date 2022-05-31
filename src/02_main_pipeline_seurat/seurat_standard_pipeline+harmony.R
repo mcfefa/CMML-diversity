@@ -59,10 +59,10 @@ clustree(allSeurat, prefix = "RNA_snn_res.")
 dev.off()
 
 #Run, plot, and save UMAP
-resUse <- 0.1
+resUse <- 0.05
 
 #Fix ordering of resolution we use (default is that clusters 10, 11, come before 2)
-allSeurat$clusterResolution_0.1 <- as.factor(as.numeric(as.character(allSeurat$RNA_snn_res.0.1)))
+allSeurat$clusterResolution_0.05 <- as.factor(as.numeric(as.character(allSeurat$RNA_snn_res.0.05)))
 
 allSeurat <- RunUMAP(allSeurat, dims = 1:50, reduction = "harmony")
 pdf(paste0(outdir, 'UMAP_res=', resUse, '_standard_pipeline_withHarmony.pdf'))
